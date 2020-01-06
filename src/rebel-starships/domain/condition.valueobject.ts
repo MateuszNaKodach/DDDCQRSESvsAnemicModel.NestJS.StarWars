@@ -7,6 +7,10 @@ export class Condition {
         return new Condition(points);
     }
 
+    static full(): Condition {
+        return new Condition(100);
+    }
+
     plus(points: number): Condition {
         return new Condition(this.points + points);
     }

@@ -1,4 +1,4 @@
-export class AttackStarshipDto {
+export class AttackStarshipRequestBody {
     targetId: string;
     starshipIdWhichAttacked: string;
 }
