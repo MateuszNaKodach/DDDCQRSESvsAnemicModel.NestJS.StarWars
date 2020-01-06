@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { EventsourcingStarshipsModule } from './eventsourcing-starships/eventsourcing-starships.module';
-import { EventsourcingModule } from './eventsourcing/eventsourcing.module';
+import {NestEventSourcingModule} from './nest-event-sourcing/nest-event-sourcing.module';
+import { NestTimeProviderModule } from './nest-time-provider/nest-time-provider.module';
+import { RebelStarshipsModule } from './rebel-starships/rebel-starships.module';
 
 @Module({
-  imports: [EventsourcingStarshipsModule, EventsourcingModule],
+  imports: [NestEventSourcingModule, NestTimeProviderModule, RebelStarshipsModule],
   controllers: [AppController],
   providers: [AppService],
 })
