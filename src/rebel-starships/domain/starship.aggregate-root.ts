@@ -19,7 +19,7 @@ export class Starship extends AggregateRoot {
     }
 
     sendToBattle(id: StarshipId, fraction: Fraction) {
-        this.apply(StarshipSentToBattle.of(id, this.timeProvider.currentDate(), {fraction}));
+        this.apply(StarshipSentToBattle.newFrom(id, this.timeProvider.currentDate(), {fraction}));
     }
 
     onStarshipSentToBattle(event: StarshipSentToBattle) {

@@ -7,6 +7,8 @@ import {DomainEvent} from '../../nest-event-sourcing/domain-event';
 import {StarshipEvents} from '../domain/starship.events';
 import {TimeProvider} from '../../nest-time-provider/time.provider';
 import {Inject, Injectable} from '@nestjs/common';
+import {StoreDomainEventEntry} from './store-domain-event-entry';
+import {DomainEventId} from '../../nest-event-sourcing/domain-event-id.valueobject';
 
 @Injectable()
 export class EventSourcedStarshipRepository implements StarshipRepository {
@@ -19,26 +21,36 @@ export class EventSourcedStarshipRepository implements StarshipRepository {
     }
 
     async findById(id: StarshipId): Promise<Starship> {
-        const events = await this.eventStore.readEvents(id);
+        const events = await this.eventStore.readEvents(id.raw);
         const starship = new Starship(this.timeProvider);
-        starship.loadFromHistory(events.map(EventSourcedStarshipRepository.recreateEvent));
+        starship.loadFromHistory(events.map(EventSourcedStarshipRepository.recreateEventFromStored));
         return Promise.resolve(starship);
     }
 
-    private static recreateEvent(event: DomainEvent) {
+    private static recreateEventFromStored(event: StoreDomainEventEntry) {
         try {
-            console.log(event);
-            return new (StarshipEvents as any)[event.eventType](event.eventId, event.aggregateId, event.occurredAt, event.payload, event.eventType);
+            return new StarshipEvents[event.eventType]
+            (DomainEventId.of(event.eventId), event.occurredAt, StarshipId.of(event.aggregateId), event.payload);
         } catch (error) {
-            console.log(error);
             throw new Error('UNHANDLED_EVENT_RECONSTRUCTION');
         }
     }
 
     save(starship: Starship): Promise<void> {
-        const uncommitedEvents = starship.getUncommittedEvents().map(it => it as DomainEvent);
+        const uncommitedEvents = starship.getUncommittedEvents()
+            .map(it => EventSourcedStarshipRepository.toStoreDomainEventEntry(it as DomainEvent));
         return this.eventStore.storeAll(uncommitedEvents)
             .then(() => this.eventPublisher.mergeObjectContext(starship).commit());
+    }
+
+    private static toStoreDomainEventEntry(event: DomainEvent): StoreDomainEventEntry {
+        return {
+            eventId: event.eventId.raw,
+            aggregateId: event.aggregateId.raw,
+            occurredAt: event.occurredAt,
+            eventType: event.eventType,
+            payload: event.payload,
+        };
     }
 
 }

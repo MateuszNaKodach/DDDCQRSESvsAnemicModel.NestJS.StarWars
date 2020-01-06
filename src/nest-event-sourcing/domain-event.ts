@@ -2,10 +2,10 @@ import {AggregateId} from './aggregate-id.valueobject';
 import {DomainEventId} from './domain-event-id.valueobject';
 import {IEvent} from '@nestjs/cqrs';
 
-export interface DomainEvent extends IEvent {
+export interface DomainEvent<I extends AggregateId = AggregateId, T = any> extends IEvent {
     readonly eventId: DomainEventId;
-    readonly eventType: string;
-    readonly aggregateId: AggregateId;
     readonly occurredAt: Date;
-    readonly payload: any;
+    readonly eventType: string;
+    readonly aggregateId: I;
+    readonly payload: T;
 }

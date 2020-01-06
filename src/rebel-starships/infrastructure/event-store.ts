@@ -1,12 +1,11 @@
-import {DomainEvent} from '../../nest-event-sourcing/domain-event';
-import {AggregateId} from '../../nest-event-sourcing/aggregate-id.valueobject';
+import {StoreDomainEventEntry} from './store-domain-event-entry';
 
 export interface EventStore {
 
-    store(event: DomainEvent): Promise<void>;
+    store(event: StoreDomainEventEntry): Promise<void>;
 
-    storeAll(events: DomainEvent[]): Promise<void>;
+    storeAll(events: StoreDomainEventEntry[]): Promise<void>;
 
-    readEvents(aggregateId: AggregateId, toDate?: Date): Promise<DomainEvent[]>;
+    readEvents(aggregateId: string, toDate?: Date): Promise<StoreDomainEventEntry[]>;
 
 }
