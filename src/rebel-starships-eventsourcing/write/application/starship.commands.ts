@@ -1,6 +1,5 @@
 import {StarshipId} from '../domain/starship-id.valueobject';
 import {Fraction} from '../domain/fraction.enum';
-import {Importance} from '../domain/importance.enum';
 import {Condition} from '../domain/condition.valueobject';
 
 export namespace StarshipCommand {
@@ -8,7 +7,6 @@ export namespace StarshipCommand {
     export class SendStarshipToBattle {
         constructor(readonly id: StarshipId,
                     readonly fraction: Fraction,
-                    readonly importance: Importance,
         ) {
         }
     }

@@ -2,7 +2,6 @@ import {StarshipId} from './starship-id.valueobject';
 import {Fraction} from './fraction.enum';
 import {DomainEventId} from './domain-event-id.valueobject';
 import {AbstractDomainEvent} from './abstract-domain-event';
-import {Importance} from './importance.enum';
 import {Condition} from './condition.valueobject';
 
 export namespace StarshipDomainEvent {
@@ -10,8 +9,8 @@ export namespace StarshipDomainEvent {
     abstract class AbstractStarshipDomainEvent<P = any> extends AbstractDomainEvent<StarshipId, P> {
     }
 
-    export class StarshipSentToBattle extends AbstractStarshipDomainEvent<{ fraction: Fraction, importance: Importance }> {
-        static newFrom(aggregateId: StarshipId, occurredAt: Date, payload: { fraction: Fraction, importance: Importance }) {
+    export class StarshipSentToBattle extends AbstractStarshipDomainEvent<{ fraction: Fraction }> {
+        static newFrom(aggregateId: StarshipId, occurredAt: Date, payload: { fraction: Fraction }) {
             return new StarshipSentToBattle(
                 DomainEventId.generate(),
                 occurredAt,
@@ -21,8 +20,8 @@ export namespace StarshipDomainEvent {
         }
     }
 
-    export class StarshipAttacked extends AbstractStarshipDomainEvent<{ fraction: Fraction, importance: Importance, power: Condition }> {
-        static newFrom(aggregateId: StarshipId, occurredAt: Date, payload: { fraction: Fraction, importance: Importance, power: Condition }) {
+    export class StarshipAttacked extends AbstractStarshipDomainEvent<{ fraction: Fraction, power: Condition }> {
+        static newFrom(aggregateId: StarshipId, occurredAt: Date, payload: { fraction: Fraction, power: Condition }) {
             return new StarshipAttacked(
                 DomainEventId.generate(),
                 occurredAt,
@@ -32,8 +31,8 @@ export namespace StarshipDomainEvent {
         }
     }
 
-    export class StarshipDestroyed extends AbstractStarshipDomainEvent<{ fraction: Fraction, importance: Importance }> {
-        static newFrom(aggregateId: StarshipId, occurredAt: Date, payload: { fraction: Fraction, importance: Importance }) {
+    export class StarshipDestroyed extends AbstractStarshipDomainEvent<{ fraction: Fraction }> {
+        static newFrom(aggregateId: StarshipId, occurredAt: Date, payload: { fraction: Fraction }) {
             return new StarshipDestroyed(
                 DomainEventId.generate(),
                 occurredAt,
@@ -58,11 +57,11 @@ export namespace StarshipDomainEvent {
         }
     }
 
-    export class StarshipCaptured extends AbstractStarshipDomainEvent<{ from: Fraction, by: Fraction, importance: Importance, with: Condition }> {
+    export class StarshipCaptured extends AbstractStarshipDomainEvent<{ from: Fraction, by: Fraction, with: Condition }> {
         static newFrom(
             aggregateId: StarshipId,
             occurredAt: Date,
-            payload: { from: Fraction, by: Fraction, importance: Importance, with: Condition },
+            payload: { from: Fraction, by: Fraction, with: Condition },
         ) {
             return new StarshipCaptured(
                 DomainEventId.generate(),

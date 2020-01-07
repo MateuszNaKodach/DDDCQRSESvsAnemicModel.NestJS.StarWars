@@ -7,14 +7,13 @@ import {StarshipCommand} from '../../application/starship.commands';
 import SendStarshipToBattle = StarshipCommand.SendStarshipToBattle;
 import AttackStarship = StarshipCommand.AttackStarship;
 import {Condition} from '../../domain/condition.valueobject';
-import {Importance} from '../../domain/importance.enum';
 import {RepairStarshipRequestBody} from './repair-starship.request-body';
 import RepairStarship = StarshipCommand.RepairStarship;
 import {CaptureStarshipRequestBody} from './capture-starship.request-body';
 import CaptureStarship = StarshipCommand.CaptureStarship;
 import {StarshipRepository} from '../../domain/starship.repository';
 
-@Controller('starships')
+@Controller('/event-sourcing/starships')
 export class StarshipsController {
 
     constructor(
@@ -26,10 +25,9 @@ export class StarshipsController {
     @Post()
     sendStarshipToBattle(
         @Body('fraction') fraction: Fraction,
-        @Body('importance') importance: Importance,
     ) {
         return this.commandBus
-            .execute(new SendStarshipToBattle(StarshipId.generate(), fraction, importance))
+            .execute(new SendStarshipToBattle(StarshipId.generate(), fraction))
             .then(it => it.raw);
     }
 

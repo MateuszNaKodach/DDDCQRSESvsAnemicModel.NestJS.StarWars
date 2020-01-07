@@ -1,8 +1,9 @@
 import {Module} from '@nestjs/common';
-import {RebelStarshipsModule} from './rebel-starships/rebel-starships.module';
+import {RebelStarshipsEventSourcingModule} from './rebel-starships-eventsourcing/rebel-starships-event-sourcing.module';
+import { RebelStarshipsAnemicModule } from './rebel-starships-anemic/rebel-starships-anemic.module';
 
 @Module({
-    imports: [RebelStarshipsModule],
+    imports: [RebelStarshipsEventSourcingModule, RebelStarshipsAnemicModule],
     controllers: [],
     providers: [],
 })

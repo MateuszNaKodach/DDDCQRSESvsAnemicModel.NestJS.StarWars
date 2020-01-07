@@ -17,9 +17,9 @@ export namespace StarshipCommandHandler {
         ) {
         }
 
-        async execute({id, fraction, importance}: StarshipCommand.SendStarshipToBattle): Promise<StarshipId> {
+        async execute({id, fraction}: StarshipCommand.SendStarshipToBattle): Promise<StarshipId> {
             const starship = new Starship(this.timeProvider);
-            starship.sendToBattle(id, fraction, importance);
+            starship.sendToBattle(id, fraction);
             await this.starshipRepository.save(starship);
             return id;
         }

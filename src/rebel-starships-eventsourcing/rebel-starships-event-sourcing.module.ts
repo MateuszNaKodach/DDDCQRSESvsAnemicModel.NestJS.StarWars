@@ -42,5 +42,5 @@ import {AttackStarshipCapturedByEmpireSaga} from './write/application/starship.s
         AttackStarshipCapturedByEmpireSaga,
     ],
 })
-export class RebelStarshipsModule {
+export class RebelStarshipsEventSourcingModule {
 }

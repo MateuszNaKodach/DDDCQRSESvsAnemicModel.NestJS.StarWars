@@ -4,7 +4,6 @@ import {Fraction} from './fraction.enum';
 import {Condition} from './condition.valueobject';
 import {TimeProvider} from '../application/time.provider';
 import {StarshipDomainEvent} from './starship.domain-events';
-import {Importance} from './importance.enum';
 import StarshipSentToBattle = StarshipDomainEvent.StarshipSentToBattle;
 import StarshipAttacked = StarshipDomainEvent.StarshipAttacked;
 import StarshipRepaired = StarshipDomainEvent.StarshipRepaired;
@@ -16,7 +15,6 @@ export class Starship extends AggregateRoot {
     private id: StarshipId;
     private fraction: Fraction;
     private condition: Condition;
-    private importance: Importance;
     private timeProvider: TimeProvider;
 
     constructor(timeProvider: TimeProvider) {
@@ -24,8 +22,8 @@ export class Starship extends AggregateRoot {
         this.timeProvider = timeProvider;
     }
 
-    sendToBattle(id: StarshipId, fraction: Fraction, importance: Importance) {
-        this.apply(StarshipSentToBattle.newFrom(id, this.timeProvider.currentDate(), {fraction, importance}));
+    sendToBattle(id: StarshipId, fraction: Fraction) {
+        this.apply(StarshipSentToBattle.newFrom(id, this.timeProvider.currentDate(), {fraction}));
     }
 
     attack(power: Condition) {
@@ -39,7 +37,6 @@ export class Starship extends AggregateRoot {
             this.apply(
                 StarshipAttacked.newFrom(this.id, this.timeProvider.currentDate(), {
                     fraction: this.fraction,
-                    importance: this.importance,
                     power,
                 }),
             );
@@ -47,7 +44,6 @@ export class Starship extends AggregateRoot {
             this.apply(
                 StarshipDestroyed.newFrom(this.id, this.timeProvider.currentDate(), {
                     fraction: this.fraction,
-                    importance: this.importance,
                 }),
             );
         }
@@ -74,7 +70,6 @@ export class Starship extends AggregateRoot {
             StarshipCaptured.newFrom(this.id, this.timeProvider.currentDate(), {
                 from: this.fraction,
                 by: this.fraction,
-                importance: this.importance,
                 with: this.condition,
             }),
         );
