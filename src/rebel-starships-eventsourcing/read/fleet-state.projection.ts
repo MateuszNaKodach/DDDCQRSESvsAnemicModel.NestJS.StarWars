@@ -22,6 +22,21 @@ export namespace FleetStateProjection {
 
     }
 
+    @EventsHandler(StarshipDomainEvent.StarshipAttacked)
+    export class StarshipAttacked implements IEventHandler<StarshipDomainEvent.StarshipAttacked> {
+
+        constructor(@Inject('FleetStateRepository') private fleetStateRepository: FleetStateRepository) {
+        }
+
+        async handle(event: StarshipDomainEvent.StarshipAttacked) {
+            return eventProjection(this.fleetStateRepository, event.payload.fraction, state => ({
+                ...state,
+                attacked: state.attacked++,
+            }));
+        }
+
+    }
+
     @EventsHandler(StarshipDomainEvent.StarshipDestroyed)
     export class StarshipDestroyed implements IEventHandler<StarshipDomainEvent.StarshipDestroyed> {
 
@@ -33,6 +48,7 @@ export namespace FleetStateProjection {
                 ...state,
                 starshipsInBattle: state.starshipsInBattle--,
                 destroyedStarships: state.destroyedStarships++,
+                attacked: state.attacked++,
             }));
         }
 
@@ -40,7 +56,7 @@ export namespace FleetStateProjection {
 
     const eventProjection = async (repository: FleetStateRepository, fraction: Fraction, projection: (state: FleetState) => void): Promise<void> => {
         const fleetState = await repository.findBy(fraction)
-            .then(found => found ? found : {fraction, starshipsInBattle: 0, destroyedStarships: 0});
+            .then(found => found ? found : {fraction, starshipsInBattle: 0, destroyedStarships: 0, attacked: 0});
         projection(fleetState);
         return repository.save(fleetState);
     };

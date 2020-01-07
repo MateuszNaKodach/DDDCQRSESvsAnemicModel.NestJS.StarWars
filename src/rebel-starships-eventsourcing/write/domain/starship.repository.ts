@@ -1,9 +1,5 @@
 import {Starship} from './starship.aggregate-root';
+import {AggregateRootRepository} from './aggregate-root.repository';
 
-export interface StarshipRepository {
-
-    save(starship: Starship): Promise<void>;
-
-    findById(id: Starship['id']): Promise<Starship | null>;
-
+export interface StarshipRepository extends AggregateRootRepository<Starship, Starship['id']> {
 }

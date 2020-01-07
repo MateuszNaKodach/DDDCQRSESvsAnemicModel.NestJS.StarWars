@@ -4,4 +4,5 @@ export class FleetState {
     fraction: Fraction;
     starshipsInBattle: number;
     destroyedStarships: number;
+    attacked: number;
 }
