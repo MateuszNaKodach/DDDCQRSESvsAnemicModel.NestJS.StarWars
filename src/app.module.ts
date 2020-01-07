@@ -4,6 +4,7 @@ import {RebelStarshipsAnemicModule} from './rebel-starships-anemic/rebel-starshi
 import {ConfigModule} from '@nestjs/config';
 import database from '../config/database';
 import {TypeOrmModule} from '@nestjs/typeorm';
+import modules from '../config/modules';
 
 //Jak użyć config service tutaj: https://docs.nestjs.com/techniques/database  Async
 
@@ -18,25 +19,25 @@ const typeOrmModule = TypeOrmModule.forRoot({
     synchronize: true,
 });
 
-const modules = [
+const modulesToImport = [
     ConfigModule.forRoot({
-        load: [database],
+        load: [modules, database],
     }),
     RebelStarshipsEventSourcingModule,
     RebelStarshipsAnemicModule,
 ];
 
 if ('typeorm' === process.env.DATABASE_MODE) {
-    modules.push(typeOrmModule);
+    modulesToImport.push(typeOrmModule);
 }
 
 @Module({
     imports: [
-        ...modules,
+        ...modulesToImport,
     ],
     controllers: [],
     providers: [],
-    exports: [...modules],
+    exports: [...modulesToImport],
 })
 export class AppModule {
 }
