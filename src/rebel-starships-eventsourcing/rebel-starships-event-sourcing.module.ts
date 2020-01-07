@@ -24,9 +24,11 @@ import {StarshipId} from './write/domain/starship-id.valueobject';
 import OrdersSoldiersToStarshipTransfer = ArmyCommand.OrderSoldiersToStarshipTransfer;
 import {SoldiersTransferSaga} from './write/application/soldiers-transfer.saga';
 import {ArmyController} from './write/presentation/rest/army.controller';
+import {TypeOrmEventStore} from './write/infrastructure/event-store.typeorm';
+import {TypeOrmModule} from '@nestjs/typeorm';
 
 @Module({
-    imports: [CqrsModule],
+    imports: [CqrsModule, TypeOrmModule.forFeature()],
     controllers: [StarshipsController, FleetStateController, ArmyController],
     providers: [
         {
@@ -39,7 +41,7 @@ import {ArmyController} from './write/presentation/rest/army.controller';
         },
         {
             provide: 'EventStore',
-            useClass: InMemoryEventStore,
+            useClass: 'typeorm' === process.env.DATABASE_MODE ? TypeOrmEventStore : InMemoryEventStore,
         },
         {
             provide: 'EmailSender',

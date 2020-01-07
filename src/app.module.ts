@@ -34,6 +34,7 @@ if ('typeorm' === process.env.DATABASE_MODE) {
     ],
     controllers: [],
     providers: [],
+    exports: [...modules],
 })
 export class AppModule {
 }

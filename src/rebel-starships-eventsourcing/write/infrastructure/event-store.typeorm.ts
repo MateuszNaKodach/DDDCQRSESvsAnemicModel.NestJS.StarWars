@@ -16,13 +16,18 @@ export class TypeOrmEventStore implements EventStore {
         @InjectRepository(DomainEventEntity) private readonly typeOrmRepository: Repository<DomainEventEntity>) {
     }
 
-    store(event: StoreDomainEventEntry, expectedVersion?: EventStreamVersion): Promise<void> {
-        const typeOrmDomainEvent = new DomainEventEntity({...event});
+    async store(event: StoreDomainEventEntry, expectedVersion?: EventStreamVersion): Promise<void> {
+        const aggregateEvents = await this.typeOrmRepository.find({where: {aggregateId: event.aggregateId}});
+        const nextEventOrder = aggregateEvents.length + 1;
+        const typeOrmDomainEvent = new DomainEventEntity({...event, order: nextEventOrder});
         return this.typeOrmRepository.save(typeOrmDomainEvent).then();
     }
 
-    storeAll(events: StoreDomainEventEntry[]): Promise<void> {
-        const typeOrmEvents = events.map(it => new DomainEventEntity({...it}));
+    //TODO: Check if events are from one stream!
+    async storeAll(events: StoreDomainEventEntry[]): Promise<void> {
+        const aggregateEvents = await this.typeOrmRepository.find({where: {aggregateId: events[0].aggregateId}});
+        const nextEventOrder = aggregateEvents.length + 1;
+        const typeOrmEvents = events.map((e, i) => new DomainEventEntity({...e, order: nextEventOrder + i}));
         return this.typeOrmRepository.save(typeOrmEvents).then();
     }
 
