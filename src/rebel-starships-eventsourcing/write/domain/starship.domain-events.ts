@@ -3,10 +3,22 @@ import {Fraction} from './fraction.enum';
 import {DomainEventId} from './domain-event-id.valueobject';
 import {AbstractDomainEvent} from './abstract-domain-event';
 import {Condition} from './condition.valueobject';
+import {Soldier} from './soldier.entity';
 
 export namespace StarshipDomainEvent {
 
     abstract class AbstractStarshipDomainEvent<P = any> extends AbstractDomainEvent<StarshipId, P> {
+    }
+
+    export class StarshipPrepared extends AbstractStarshipDomainEvent<{ fraction: Fraction }> {
+        static newFrom(aggregateId: StarshipId, occurredAt: Date, payload: { fraction: Fraction }) {
+            return new StarshipPrepared(
+                DomainEventId.generate(),
+                occurredAt,
+                aggregateId,
+                payload,
+            );
+        }
     }
 
     export class StarshipSentToBattle extends AbstractStarshipDomainEvent<{ fraction: Fraction }> {
@@ -64,6 +76,36 @@ export namespace StarshipDomainEvent {
             payload: { from: Fraction, by: Fraction, with: Condition },
         ) {
             return new StarshipCaptured(
+                DomainEventId.generate(),
+                occurredAt,
+                aggregateId,
+                payload,
+            );
+        }
+    }
+
+    export class SoldiersAddedToStarshipCrew extends AbstractStarshipDomainEvent<{ soldiers: Soldier[] }> {
+        static newFrom(
+            aggregateId: StarshipId,
+            occurredAt: Date,
+            payload: { soldiers: Soldier[] },
+        ) {
+            return new SoldiersAddedToStarshipCrew(
+                DomainEventId.generate(),
+                occurredAt,
+                aggregateId,
+                payload,
+            );
+        }
+    }
+
+    export class SoldiersSentBackToArmy extends AbstractStarshipDomainEvent<{ soldiers: Soldier[] }> {
+        static newFrom(
+            aggregateId: StarshipId,
+            occurredAt: Date,
+            payload: { soldiers: Soldier[] },
+        ) {
+            return new SoldiersSentBackToArmy(
                 DomainEventId.generate(),
                 occurredAt,
                 aggregateId,

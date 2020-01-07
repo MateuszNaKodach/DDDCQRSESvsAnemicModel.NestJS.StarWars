@@ -12,10 +12,9 @@ import {StarshipDomainEvent} from '../domain/starship.domain-events';
 import {AggregateRootRepository} from '../domain/aggregate-root.repository';
 import {AggregateId} from '../domain/aggregate-id.valueobject';
 
-@Injectable()
 export abstract class EventSourcedAggregateRootRepository<T extends AggregateRoot, I extends AggregateId> implements AggregateRootRepository<T, I> {
 
-    constructor(
+    protected constructor(
         protected readonly timeProvider: TimeProvider,
         private readonly eventStore: EventStore,
         private readonly eventPublisher: EventPublisher,
@@ -32,9 +31,9 @@ export abstract class EventSourcedAggregateRootRepository<T extends AggregateRoo
         return Promise.resolve(aggregate);
     }
 
-    abstract newAggregate(): T;
+    protected abstract newAggregate(): T;
 
-    abstract recreateEventFromStored(event: StoreDomainEventEntry): DomainEvent;
+    protected abstract recreateEventFromStored(event: StoreDomainEventEntry): DomainEvent;
 
     save(aggregate: T): Promise<void> {
         const uncommitedEvents = aggregate.getUncommittedEvents()

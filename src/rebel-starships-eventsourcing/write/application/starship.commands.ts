@@ -1,13 +1,19 @@
 import {StarshipId} from '../domain/starship-id.valueobject';
 import {Fraction} from '../domain/fraction.enum';
 import {Condition} from '../domain/condition.valueobject';
+import {Soldier} from '../domain/soldier.entity';
 
 export namespace StarshipCommand {
 
-    export class SendStarshipToBattle {
+    export class PrepareNewStarship {
         constructor(readonly id: StarshipId,
                     readonly fraction: Fraction,
         ) {
+        }
+    }
+
+    export class SendStarshipToBattle {
+        constructor(readonly id: StarshipId) {
         }
     }
 
@@ -31,6 +37,23 @@ export namespace StarshipCommand {
         constructor(
             readonly target: StarshipId,
             readonly by: Fraction,
+        ) {
+        }
+    }
+
+    export class AddSoldiersToStarshipCrew {
+        constructor(
+            readonly target: StarshipId,
+            readonly soldiers: Soldier[],
+        ) {
+        }
+    }
+
+    export class SendSoldiersBackToArmy {
+        constructor(
+            readonly starship: StarshipId,
+            readonly fraction: Fraction,
+            readonly soldiers: number,
         ) {
         }
     }

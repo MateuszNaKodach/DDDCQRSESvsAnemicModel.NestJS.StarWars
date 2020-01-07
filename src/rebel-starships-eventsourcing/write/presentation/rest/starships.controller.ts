@@ -12,6 +12,7 @@ import RepairStarship = StarshipCommand.RepairStarship;
 import {CaptureStarshipRequestBody} from './capture-starship.request-body';
 import CaptureStarship = StarshipCommand.CaptureStarship;
 import {StarshipRepository} from '../../domain/starship.repository';
+import PrepareNewStarship = StarshipCommand.PrepareNewStarship;
 
 @Controller('/event-sourcing/starships')
 export class StarshipsController {
@@ -23,12 +24,20 @@ export class StarshipsController {
     }
 
     @Post()
-    sendStarshipToBattle(
+    prepareNewStarship(
         @Body('fraction') fraction: Fraction,
     ) {
         return this.commandBus
-            .execute(new SendStarshipToBattle(StarshipId.generate(), fraction))
+            .execute(new PrepareNewStarship(StarshipId.generate(), fraction))
             .then(it => it.raw);
+    }
+
+    @Post(':id/battle')
+    sendStarshipToBattle(
+        @Param('id') id: string,
+    ) {
+        return this.commandBus
+            .execute(new SendStarshipToBattle(StarshipId.of(id)))
     }
 
     @Post('/attack')

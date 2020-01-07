@@ -9,6 +9,10 @@ import StarshipAttacked = StarshipDomainEvent.StarshipAttacked;
 import StarshipRepaired = StarshipDomainEvent.StarshipRepaired;
 import StarshipDestroyed = StarshipDomainEvent.StarshipDestroyed;
 import StarshipCaptured = StarshipDomainEvent.StarshipCaptured;
+import {Soldier} from './soldier.entity';
+import SoldiersAddedToStarshipCrew = StarshipDomainEvent.SoldiersAddedToStarshipCrew;
+import SoldiersSentBackToArmy = StarshipDomainEvent.SoldiersSentBackToArmy;
+import StarshipPrepared = StarshipDomainEvent.StarshipPrepared;
 
 // TODO: Może żołnierze? I nie można wysłać starship bez żołnierzy?
 export class Starship extends AggregateRoot {
@@ -16,6 +20,7 @@ export class Starship extends AggregateRoot {
     private id: StarshipId;
     private fraction: Fraction;
     private condition: Condition;
+    private crew: Soldier[] = [];
     private timeProvider: TimeProvider;
 
     constructor(timeProvider: TimeProvider) {
@@ -23,8 +28,15 @@ export class Starship extends AggregateRoot {
         this.timeProvider = timeProvider;
     }
 
-    sendToBattle(id: StarshipId, fraction: Fraction) {
-        this.apply(StarshipSentToBattle.newFrom(id, this.timeProvider.currentDate(), {fraction}));
+    prepare(id: StarshipId, fraction: Fraction) {
+        this.apply(StarshipPrepared.newFrom(id, this.timeProvider.currentDate(), {fraction}));
+    }
+
+    sendToBattle() {
+        if (this.crew.length === 0) {
+            throw new Error('Cannot send to battle starship without crew!');
+        }
+        this.apply(StarshipSentToBattle.newFrom(this.id, this.timeProvider.currentDate(), {fraction: this.fraction}));
     }
 
     attack(power: Condition) {
@@ -76,13 +88,32 @@ export class Starship extends AggregateRoot {
         );
     }
 
+    addSoldiersToCrew(soldiers: Soldier[]) {
+        this.apply(
+            SoldiersAddedToStarshipCrew.newFrom(this.id, this.timeProvider.currentDate(), {
+                soldiers,
+            }),
+        );
+    }
+
+    sendSoldiersBackToArmy(soldiersCount: number) {
+        this.apply(
+            SoldiersSentBackToArmy.newFrom(this.id, this.timeProvider.currentDate(), {
+                soldiers: this.crew.slice(0, soldiersCount),
+            }),
+        );
+    }
+
     private isDestroyed(): boolean {
         return this.condition.isZero();
     }
 
-    onStarshipSentToBattle(event: StarshipSentToBattle) {
+    onStarshipPrepared(event: StarshipPrepared) {
         this.id = event.aggregateId;
         this.fraction = event.payload.fraction;
+    }
+
+    onStarshipSentToBattle(event: StarshipSentToBattle) {
         this.condition = Condition.full();
     }
 
@@ -100,5 +131,13 @@ export class Starship extends AggregateRoot {
 
     onStarshipCaptured(event: StarshipCaptured) {
         this.fraction = event.payload.from;
+    }
+
+    onSoldiersAddedToStarshipCrew(event: SoldiersAddedToStarshipCrew) {
+        this.crew.push(...event.payload.soldiers);
+    }
+
+    onSoldiersSentBackToArmy(event: SoldiersSentBackToArmy) {
+        this.crew = this.crew.slice(0, event.payload.soldiers.length);
     }
 }

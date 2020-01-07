@@ -9,9 +9,12 @@ import {StoreDomainEventEntry} from './store-domain-event-entry';
 import {DomainEventId} from '../domain/domain-event-id.valueobject';
 import {StarshipDomainEvent} from '../domain/starship.domain-events';
 import {EventSourcedAggregateRootRepository} from './event-sourced-aggregate-root.repository';
+import {Army} from '../domain/army.aggregate-root';
+import {ArmyDomainEvent} from '../domain/army.domain-events';
+import {ArmyId} from '../domain/army-id.valueobject';
 
 @Injectable()
-export class EventSourcedStarshipRepository extends EventSourcedAggregateRootRepository<Starship, Starship['id']> {
+export class EventSourcedArmyRepository extends EventSourcedAggregateRootRepository<Army, Army['id']> {
 
     constructor(@Inject('TimeProvider') timeProvider: TimeProvider,
                 @Inject('EventStore')  eventStore: EventStore,
@@ -20,14 +23,14 @@ export class EventSourcedStarshipRepository extends EventSourcedAggregateRootRep
         super(timeProvider, eventStore, eventPublisher);
     }
 
-    protected newAggregate(): Starship {
-        return new Starship(this.timeProvider);
+    protected newAggregate(): Army {
+        return new Army(this.timeProvider);
     }
 
     protected recreateEventFromStored(event: StoreDomainEventEntry): DomainEvent {
         try {
-            return new StarshipDomainEvent[event.eventType]
-            (DomainEventId.of(event.eventId), event.occurredAt, StarshipId.of(event.aggregateId), event.payload);
+            return new ArmyDomainEvent[event.eventType]
+            (DomainEventId.of(event.eventId), event.occurredAt, ArmyId.of(event.aggregateId), event.payload);
         } catch (error) {
             throw new Error('UNHANDLED_EVENT_RECONSTRUCTION');
         }

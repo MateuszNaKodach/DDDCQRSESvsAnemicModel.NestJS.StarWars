@@ -8,8 +8,8 @@ import {StarshipCommand} from './starship.commands';
 
 export namespace StarshipCommandHandler {
 
-    @CommandHandler(StarshipCommand.SendStarshipToBattle)
-    export class SendStarshipToBattle implements ICommandHandler<StarshipCommand.SendStarshipToBattle> {
+    @CommandHandler(StarshipCommand.PrepareNewStarship)
+    export class PrepareNewStarship implements ICommandHandler<StarshipCommand.PrepareNewStarship> {
 
         constructor(
             @Inject('StarshipRepository') private starshipRepository: StarshipRepository,
@@ -17,11 +17,29 @@ export namespace StarshipCommandHandler {
         ) {
         }
 
-        async execute({id, fraction}: StarshipCommand.SendStarshipToBattle): Promise<StarshipId> {
+        async execute({id, fraction}: StarshipCommand.PrepareNewStarship): Promise<StarshipId> {
             const starship = new Starship(this.timeProvider);
-            starship.sendToBattle(id, fraction);
+            starship.prepare(id, fraction);
             await this.starshipRepository.save(starship);
             return id;
+        }
+
+    }
+
+    @CommandHandler(StarshipCommand.SendStarshipToBattle)
+    export class SendStarshipToBattle implements ICommandHandler<StarshipCommand.SendStarshipToBattle> {
+
+        constructor(
+            @Inject('StarshipRepository') private starshipRepository: StarshipRepository,
+        ) {
+        }
+
+        async execute(command: StarshipCommand.SendStarshipToBattle) {
+            return executeCommand(
+                this.starshipRepository,
+                command.id,
+                starship => starship.sendToBattle(),
+            );
         }
 
     }
@@ -80,6 +98,42 @@ export namespace StarshipCommandHandler {
 
     }
 
+    @CommandHandler(StarshipCommand.AddSoldiersToStarshipCrew)
+    export class AddSoldiersToStarshipCrew implements ICommandHandler<StarshipCommand.AddSoldiersToStarshipCrew> {
+
+        constructor(
+            @Inject('StarshipRepository') private starshipRepository: StarshipRepository,
+        ) {
+        }
+
+        async execute(command: StarshipCommand.AddSoldiersToStarshipCrew) {
+            return executeCommand(
+                this.starshipRepository,
+                command.target,
+                starship => starship.addSoldiersToCrew(command.soldiers),
+            );
+        }
+
+    }
+
+    @CommandHandler(StarshipCommand.SendSoldiersBackToArmy)
+    export class SendSoldiersBackToArmy implements ICommandHandler<StarshipCommand.SendSoldiersBackToArmy> {
+
+        constructor(
+            @Inject('StarshipRepository') private starshipRepository: StarshipRepository,
+        ) {
+        }
+
+        async execute(command: StarshipCommand.SendSoldiersBackToArmy) {
+            return executeCommand(
+                this.starshipRepository,
+                command.starship,
+                starship => starship.sendSoldiersBackToArmy(command.soldiers),
+            );
+        }
+
+    }
+
     const executeCommand = async (repository: StarshipRepository, targetId: StarshipId, command: (target: Starship) => void): Promise<void> => {
         const starship = await repository.findById(targetId);
         if (!starship) {
@@ -89,6 +143,14 @@ export namespace StarshipCommandHandler {
         return repository.save(starship);
     };
 
-    export const All = [SendStarshipToBattle, AttackStarship, RepairStarship, CaptureStarship];
+    export const All = [
+        PrepareNewStarship,
+        SendStarshipToBattle,
+        AttackStarship,
+        RepairStarship,
+        CaptureStarship,
+        AddSoldiersToStarshipCrew,
+        SendSoldiersBackToArmy
+    ];
 
 }
