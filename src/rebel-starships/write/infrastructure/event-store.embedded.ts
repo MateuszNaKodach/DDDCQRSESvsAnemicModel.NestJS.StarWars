@@ -3,6 +3,7 @@ import {TimeProvider} from '../application/time.provider';
 import * as moment from 'moment';
 import {Inject, Injectable} from '@nestjs/common';
 import {StoreDomainEventEntry} from './store-domain-event-entry';
+import {EventStreamVersion} from './event-stream-version.valueobject';
 
 @Injectable()
 export class InMemoryEventStore implements EventStore {
@@ -12,7 +13,7 @@ export class InMemoryEventStore implements EventStore {
     constructor(@Inject('TimeProvider') private readonly timeProvider: TimeProvider) {
     }
 
-    store(event: StoreDomainEventEntry): Promise<void> {
+    store(event: StoreDomainEventEntry, expectedVersion?: EventStreamVersion): Promise<void> {
         const foundStream = this.eventStreams[event.aggregateId];
         if (!foundStream) {
             this.eventStreams[event.aggregateId] = [event];

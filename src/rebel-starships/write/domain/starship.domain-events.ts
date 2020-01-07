@@ -58,8 +58,12 @@ export namespace StarshipDomainEvent {
         }
     }
 
-    export class StarshipCaptured extends AbstractStarshipDomainEvent<{ from: Fraction, by: Fraction, importance: Importance }> {
-        static newFrom(aggregateId: StarshipId, occurredAt: Date, payload: { from: Fraction, by: Fraction, importance: Importance }) {
+    export class StarshipCaptured extends AbstractStarshipDomainEvent<{ from: Fraction, by: Fraction, importance: Importance, with: Condition }> {
+        static newFrom(
+            aggregateId: StarshipId,
+            occurredAt: Date,
+            payload: { from: Fraction, by: Fraction, importance: Importance, with: Condition },
+        ) {
             return new StarshipCaptured(
                 DomainEventId.generate(),
                 occurredAt,

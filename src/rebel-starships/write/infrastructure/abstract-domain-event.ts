@@ -8,7 +8,7 @@ export abstract class AbstractDomainEvent<I extends AggregateId = AggregateId, T
     readonly aggregateId: I;
     readonly payload: T;
 
-    protected constructor(eventId: DomainEventId, occurredAt: Date, aggregateId: I, payload: T) {
+    constructor(eventId: DomainEventId, occurredAt: Date, aggregateId: I, payload: T) {
         this.eventId = eventId;
         this.occurredAt = occurredAt;
         this.aggregateId = aggregateId;

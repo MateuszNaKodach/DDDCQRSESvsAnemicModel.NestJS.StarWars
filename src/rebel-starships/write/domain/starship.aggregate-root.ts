@@ -75,6 +75,7 @@ export class Starship extends AggregateRoot {
                 from: this.fraction,
                 by: this.fraction,
                 importance: this.importance,
+                with: this.condition,
             }),
         );
     }
