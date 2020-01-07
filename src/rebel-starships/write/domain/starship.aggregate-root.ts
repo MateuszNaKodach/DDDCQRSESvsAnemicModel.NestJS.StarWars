@@ -94,6 +94,10 @@ export class Starship extends AggregateRoot {
         this.condition = this.condition.minus(event.payload.power);
     }
 
+    onStarshipDestroyed(event: StarshipDestroyed) {
+        this.condition = Condition.zero();
+    }
+
     onStarshipRepaired(event: StarshipRepaired) {
         this.condition = this.condition.plus(event.payload.repaired);
     }

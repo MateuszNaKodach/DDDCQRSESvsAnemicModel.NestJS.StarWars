@@ -1,4 +1,4 @@
 export enum Fraction {
-    REBELLION,
-    EMPIRE,
+    REBELLION = 'REBELLION',
+    EMPIRE = 'EMPIRE',
 }

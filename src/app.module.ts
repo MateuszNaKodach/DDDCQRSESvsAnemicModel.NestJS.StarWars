@@ -1,5 +1,5 @@
 import {Module} from '@nestjs/common';
-import {RebelStarshipsModule} from './rebel-starships/write/rebel-starships.module';
+import {RebelStarshipsModule} from './rebel-starships/rebel-starships.module';
 
 @Module({
     imports: [RebelStarshipsModule],

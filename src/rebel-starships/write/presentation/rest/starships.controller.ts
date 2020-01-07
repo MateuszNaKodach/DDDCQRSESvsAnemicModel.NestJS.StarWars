@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Inject, Param, Post} from '@nestjs/common';
+import {BadRequestException, Body, Controller, Get, Inject, Param, Post} from '@nestjs/common';
 import {CommandBus} from '@nestjs/cqrs';
 import {AttackStarshipRequestBody} from './attack-starship.request-body';
 import {StarshipId} from '../../domain/starship-id.valueobject';
@@ -19,7 +19,7 @@ export class StarshipsController {
 
     constructor(
         private readonly commandBus: CommandBus,
-        @Inject('StarshipRepository') private repository: StarshipRepository, //TODO: Change for query!
+        @Inject('StarshipRepository') private repository: StarshipRepository, // TODO: Delete!
     ) {
     }
 
@@ -37,7 +37,8 @@ export class StarshipsController {
     attackStarship(@Body() requestBody: AttackStarshipRequestBody) {
         const {targetId, power} = requestBody;
         return this.commandBus
-            .execute(new AttackStarship(StarshipId.of(targetId), Condition.of(power)));
+            .execute(new AttackStarship(StarshipId.of(targetId), Condition.of(power)))
+            .catch((e: Error) => Promise.reject(new BadRequestException(e.message)));
     }
 
     @Post('/reparation')
@@ -54,13 +55,9 @@ export class StarshipsController {
             .execute(new CaptureStarship(StarshipId.of(targetId), byFraction));
     }
 
-    @Get(':id')
+    @Get(':id') // TODO: Delete!
     getStarshipById(@Param('id') id: string) {
-        return this.repository.findById(StarshipId.of(id))
-            .then(f => {
-                console.log('Found starship by id', f);
-                return f;
-            });
+        return this.repository.findById(StarshipId.of(id));
     }
 
 }

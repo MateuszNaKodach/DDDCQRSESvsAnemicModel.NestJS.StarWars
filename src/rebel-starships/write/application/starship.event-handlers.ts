@@ -11,8 +11,8 @@ export namespace StarshipEventHandler {
         constructor(@Inject('EmailSender') private emailSender: EmailSender) {
         }
 
-        handle(event: StarshipDomainEvent.StarshipDestroyed) {
-            return this.emailSender.send({
+        async handle(event: StarshipDomainEvent.StarshipDestroyed) {
+            await this.emailSender.send({
                 to: EmailAddress.from('rebelion@starwars-eventsourcing.com'),
                 content: 'Starship destroyed!',
             });

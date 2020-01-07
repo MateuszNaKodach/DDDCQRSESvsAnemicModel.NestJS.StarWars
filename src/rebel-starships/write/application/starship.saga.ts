@@ -12,6 +12,7 @@ import AttackStarship = StarshipCommand.AttackStarship;
 @Injectable()
 export class AttackStarshipCapturedByEmpireSaga {
 
+    // TODO: Moze jakis inny na 2 streamy
     @Saga()
     starshipCapturedByEmpire = (events$: Observable<IEvent>): Observable<ICommand> => {
         return events$.pipe(

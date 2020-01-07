@@ -1,7 +1,7 @@
 import {StarshipId} from './starship-id.valueobject';
 import {Fraction} from './fraction.enum';
-import {DomainEventId} from '../infrastructure/domain-event-id.valueobject';
-import {AbstractDomainEvent} from '../infrastructure/abstract-domain-event';
+import {DomainEventId} from './domain-event-id.valueobject';
+import {AbstractDomainEvent} from './abstract-domain-event';
 import {Importance} from './importance.enum';
 import {Condition} from './condition.valueobject';
 

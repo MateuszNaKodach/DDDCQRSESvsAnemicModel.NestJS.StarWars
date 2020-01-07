@@ -1,5 +1,5 @@
 import uuid = require('uuid');
-import {AggregateId} from '../infrastructure/aggregate-id.valueobject';
+import {AggregateId} from './aggregate-id.valueobject';
 
 export class StarshipId implements AggregateId {
     private constructor(readonly raw: string) {
@@ -11,5 +11,9 @@ export class StarshipId implements AggregateId {
 
     static of(raw: string) {
         return new StarshipId(raw);
+    }
+
+    toString() {
+        return this.raw;
     }
 }

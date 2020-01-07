@@ -11,6 +11,10 @@ export class Condition {
         return new Condition(100);
     }
 
+    static zero(): Condition {
+        return new Condition(0);
+    }
+
     isZero(): boolean {
         return this.points === 0;
     }

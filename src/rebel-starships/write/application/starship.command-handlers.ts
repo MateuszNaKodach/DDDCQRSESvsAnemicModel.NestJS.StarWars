@@ -82,6 +82,9 @@ export namespace StarshipCommandHandler {
 
     const executeCommand = async (repository: StarshipRepository, targetId: StarshipId, command: (target: Starship) => void): Promise<void> => {
         const starship = await repository.findById(targetId);
+        if (!starship) {
+            throw new Error(`Starship with id ${targetId} not found!`);
+        }
         command(starship);
         return repository.save(starship);
     };
