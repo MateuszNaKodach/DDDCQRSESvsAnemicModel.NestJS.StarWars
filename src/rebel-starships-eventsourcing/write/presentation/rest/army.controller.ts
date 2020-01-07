@@ -1,4 +1,4 @@
-import {Body, Controller, Inject, Param, Post} from '@nestjs/common';
+import {BadRequestException, Body, Controller, Get, HttpCode, HttpStatus, Inject, Param, Post} from '@nestjs/common';
 import {CommandBus} from '@nestjs/cqrs';
 import {Fraction} from '../../domain/fraction.enum';
 import {StarshipId} from '../../domain/starship-id.valueobject';
@@ -6,11 +6,12 @@ import {ArmyCommand} from '../../application/army.commands';
 import RecruitSoldiers = ArmyCommand.RecruitSoldiers;
 import {ArmyId} from '../../domain/army-id.valueobject';
 import OrderSoldiersToStarshipTransfer = ArmyCommand.OrderSoldiersToStarshipTransfer;
+import {ArmyRepository} from '../../domain/army.repository';
 
 @Controller('/event-sourcing/army')
 export class ArmyController {
 
-    constructor(private readonly commandBus: CommandBus) {
+    constructor(private readonly commandBus: CommandBus, @Inject('ArmyRepository') private armyRepository: ArmyRepository) {
     }
 
     @Post()
@@ -23,6 +24,7 @@ export class ArmyController {
             .then(it => it.raw);
     }
 
+    @HttpCode(200)
     @Post(':id/soldiers-transfer')
     orderSoldiersTransfer(
         @Param('id') id: string,
@@ -30,6 +32,14 @@ export class ArmyController {
         @Body('soldiers') soldiers: number,
     ) {
         return this.commandBus
-            .execute(new OrderSoldiersToStarshipTransfer(ArmyId.generate(), soldiers, StarshipId.of(starshipId)));
+            .execute(new OrderSoldiersToStarshipTransfer(ArmyId.of(id), soldiers, StarshipId.of(starshipId)))
+            .catch((e: Error) => Promise.reject(new BadRequestException(e.message)));
+    }
+
+    @Get(':id')
+    getArmy(
+        @Param('id') id: string,
+    ) {
+        return this.armyRepository.findById(ArmyId.of(id));
     }
 }

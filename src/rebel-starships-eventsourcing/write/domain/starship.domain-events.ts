@@ -84,11 +84,11 @@ export namespace StarshipDomainEvent {
         }
     }
 
-    export class SoldiersAddedToStarshipCrew extends AbstractStarshipDomainEvent<{ soldiers: Soldier[] }> {
+    export class SoldiersAddedToStarshipCrew extends AbstractStarshipDomainEvent<{ fraction: Fraction, soldiers: Soldier[] }> {
         static newFrom(
             aggregateId: StarshipId,
             occurredAt: Date,
-            payload: { soldiers: Soldier[] },
+            payload: { fraction: Fraction, soldiers: Soldier[] },
         ) {
             return new SoldiersAddedToStarshipCrew(
                 DomainEventId.generate(),
@@ -99,11 +99,11 @@ export namespace StarshipDomainEvent {
         }
     }
 
-    export class SoldiersSentBackToArmy extends AbstractStarshipDomainEvent<{ soldiers: Soldier[] }> {
+    export class SoldiersSentBackToArmy extends AbstractStarshipDomainEvent<{ fraction: Fraction, soldiers: Soldier[] }> {
         static newFrom(
             aggregateId: StarshipId,
             occurredAt: Date,
-            payload: { soldiers: Soldier[] },
+            payload: { fraction: Fraction, soldiers: Soldier[] },
         ) {
             return new SoldiersSentBackToArmy(
                 DomainEventId.generate(),

@@ -67,11 +67,13 @@ export class RebelStarshipsEventSourcingModule implements OnModuleInit {
     }
 
     async onModuleInit() {
-        const rebellionArmyId = ArmyId.generate();
+        const rebellionArmyId = ArmyId.of(Fraction.REBELLION);
         await this.commandBus.execute(new ArmyCommand.RecruitSoldiers(rebellionArmyId, Fraction.REBELLION, 100));
-        const starshipId = StarshipId.generate();
-        await this.commandBus.execute(new PrepareNewStarship(starshipId, Fraction.REBELLION));
-        await this.commandBus.execute(new OrdersSoldiersToStarshipTransfer(rebellionArmyId, 20, starshipId));
+        const starshipId1 = StarshipId.of('Starship1');
+        await this.commandBus.execute(new PrepareNewStarship(starshipId1, Fraction.REBELLION));
+        await this.commandBus.execute(new OrdersSoldiersToStarshipTransfer(rebellionArmyId, 20, starshipId1));
+        const starshipId2 = StarshipId.of('Starship2');
+        await this.commandBus.execute(new PrepareNewStarship(starshipId2, Fraction.REBELLION));
     }
 
 }

@@ -26,7 +26,7 @@ export class Army extends AggregateRoot {
 
     orderSoldiersToStarshipTransfer(soldiersCount: number, starshipId: StarshipId) {
         if (this.soldiers.length < soldiersCount) {
-            throw new Error('No sufficient count of soldiers to transfer to starship!');
+            throw new Error(`No sufficient count of soldiers to transfer to starship! Only ${this.soldiers.length} left.`);
         }
         const soldiersToTransfer = this.soldiers.slice(0, soldiersCount);
         this.apply(SoldiersTransferToStarshipOrdered.newFrom(this.id, this.timeProvider.currentDate(), {starshipId, soldiers: soldiersToTransfer}));
@@ -40,7 +40,7 @@ export class Army extends AggregateRoot {
 
     onSoldiersTransferToStarshipOrdered(event: SoldiersTransferToStarshipOrdered) {
         this.id = event.aggregateId;
-        this.soldiers = event.payload.soldiers.slice(0, event.payload.soldiers.length);
+        this.soldiers = this.soldiers.slice(event.payload.soldiers.length, this.soldiers.length);
     }
 
 }

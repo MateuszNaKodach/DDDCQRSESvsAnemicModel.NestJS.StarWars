@@ -21,6 +21,7 @@ export class Starship extends AggregateRoot {
     private fraction: Fraction;
     private condition: Condition;
     private crew: Soldier[] = [];
+    private inBattle: boolean = false;
     private timeProvider: TimeProvider;
 
     constructor(timeProvider: TimeProvider) {
@@ -89,17 +90,25 @@ export class Starship extends AggregateRoot {
     }
 
     addSoldiersToCrew(soldiers: Soldier[]) {
+        if (this.fraction === Fraction.EMPIRE) {
+            throw new Error('Do not send soldiers to enemy starship crew!');
+        }
         this.apply(
             SoldiersAddedToStarshipCrew.newFrom(this.id, this.timeProvider.currentDate(), {
+                fraction: this.fraction,
                 soldiers,
             }),
         );
     }
 
     sendSoldiersBackToArmy(soldiersCount: number) {
+        if (this.crew.length <= soldiersCount) {
+            throw new Error(`You have to leave at least on soldier on the starship during the battle!`);
+        }
         this.apply(
             SoldiersSentBackToArmy.newFrom(this.id, this.timeProvider.currentDate(), {
-                soldiers: this.crew.slice(0, soldiersCount),
+                fraction: this.fraction,
+                soldiers: this.crew.slice(soldiersCount, this.crew.length),
             }),
         );
     }

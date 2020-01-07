@@ -1,4 +1,4 @@
-import {BadRequestException, Body, Controller, Get, Inject, Param, Post} from '@nestjs/common';
+import {BadRequestException, Body, Controller, Get, HttpCode, Inject, Param, Post} from '@nestjs/common';
 import {CommandBus} from '@nestjs/cqrs';
 import {AttackStarshipRequestBody} from './attack-starship.request-body';
 import {StarshipId} from '../../domain/starship-id.valueobject';
@@ -29,17 +29,21 @@ export class StarshipsController {
     ) {
         return this.commandBus
             .execute(new PrepareNewStarship(StarshipId.generate(), fraction))
-            .then(it => it.raw);
+            .then(it => it.raw)
+            .catch((e: Error) => Promise.reject(new BadRequestException(e.message)));
     }
 
+    @HttpCode(200)
     @Post(':id/battle')
     sendStarshipToBattle(
         @Param('id') id: string,
     ) {
         return this.commandBus
             .execute(new SendStarshipToBattle(StarshipId.of(id)))
+            .catch((e: Error) => Promise.reject(new BadRequestException(e.message)));
     }
 
+    @HttpCode(200)
     @Post('/attack')
     attackStarship(@Body() requestBody: AttackStarshipRequestBody) {
         const {targetId, power} = requestBody;
@@ -48,18 +52,22 @@ export class StarshipsController {
             .catch((e: Error) => Promise.reject(new BadRequestException(e.message)));
     }
 
+    @HttpCode(200)
     @Post('/reparation')
     repairStarship(@Body() requestBody: RepairStarshipRequestBody) {
         const {targetId, conditionPoints} = requestBody;
         return this.commandBus
-            .execute(new RepairStarship(StarshipId.of(targetId), Condition.of(conditionPoints)));
+            .execute(new RepairStarship(StarshipId.of(targetId), Condition.of(conditionPoints)))
+            .catch((e: Error) => Promise.reject(new BadRequestException(e.message)));
     }
 
+    @HttpCode(200)
     @Post('/capturation')
     captureStarship(@Body() requestBody: CaptureStarshipRequestBody) {
         const {targetId, byFraction} = requestBody;
         return this.commandBus
-            .execute(new CaptureStarship(StarshipId.of(targetId), byFraction));
+            .execute(new CaptureStarship(StarshipId.of(targetId), byFraction))
+            .catch((e: Error) => Promise.reject(new BadRequestException(e.message)));
     }
 
     @Get(':id') // TODO: Delete!
