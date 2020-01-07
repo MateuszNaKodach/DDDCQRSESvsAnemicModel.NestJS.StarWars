@@ -19,7 +19,7 @@ export class TypeOrmEventStore implements EventStore {
     async store(event: StoreDomainEventEntry, expectedVersion?: EventStreamVersion): Promise<void> {
         const aggregateEvents = await this.typeOrmRepository.find({where: {aggregateId: event.aggregateId}});
         const nextEventOrder = aggregateEvents.length + 1;
-        const typeOrmDomainEvent = new DomainEventEntity({...event, order: nextEventOrder});
+        const typeOrmDomainEvent = DomainEventEntity.fromProps({...event, order: nextEventOrder});
         return this.typeOrmRepository.save(typeOrmDomainEvent).then();
     }
 
@@ -27,7 +27,7 @@ export class TypeOrmEventStore implements EventStore {
     async storeAll(events: StoreDomainEventEntry[]): Promise<void> {
         const aggregateEvents = await this.typeOrmRepository.find({where: {aggregateId: events[0].aggregateId}});
         const nextEventOrder = aggregateEvents.length + 1;
-        const typeOrmEvents = events.map((e, i) => new DomainEventEntity({...e, order: nextEventOrder + i}));
+        const typeOrmEvents = events.map((e, i) => DomainEventEntity.fromProps({...e, order: nextEventOrder + i}));
         return this.typeOrmRepository.save(typeOrmEvents).then();
     }
 

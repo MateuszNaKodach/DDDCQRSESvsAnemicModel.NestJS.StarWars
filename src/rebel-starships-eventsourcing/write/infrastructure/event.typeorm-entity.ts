@@ -25,12 +25,23 @@ export class DomainEventEntity implements StoreDomainEventEntry {
     @Column({type: 'json'})
     readonly payload: any;
 
-    constructor(props: { eventId: string, eventType: string, occurredAt: Date, aggregateId: string, order: number, payload: any }) {
-        this.eventId = props.eventId;
-        this.eventType = props.eventType;
-        this.occurredAt = props.occurredAt;
-        this.aggregateId = props.aggregateId;
-        this.order = props.order;
-        this.payload = props.payload;
+    constructor(eventId: string, eventType: string, occurredAt: Date, aggregateId: string, order: number, payload: any) {
+        this.eventId = eventId;
+        this.eventType = eventType;
+        this.occurredAt = occurredAt;
+        this.aggregateId = aggregateId;
+        this.order = order;
+        this.payload = payload;
+    }
+
+    static fromProps(props: { eventId: string, eventType: string, occurredAt: Date, aggregateId: string, order: number, payload: any }) {
+        return new DomainEventEntity(
+            props.eventId,
+            props.eventType,
+            props.occurredAt,
+            props.aggregateId,
+            props.order,
+            props.payload
+        );
     }
 }

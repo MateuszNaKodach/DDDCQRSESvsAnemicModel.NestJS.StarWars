@@ -5,6 +5,8 @@ import {ConfigModule} from '@nestjs/config';
 import database from '../config/database';
 import {TypeOrmModule} from '@nestjs/typeorm';
 
+//Jak użyć config service tutaj: https://docs.nestjs.com/techniques/database  Async
+
 const typeOrmModule = TypeOrmModule.forRoot({
     type: 'postgres',
     host: process.env.DATABASE_HOST,
@@ -12,7 +14,7 @@ const typeOrmModule = TypeOrmModule.forRoot({
     username: process.env.DATABASE_USERNAME ? process.env.DATABASE_USERNAME : 'postgres',
     password: process.env.DATABASE_PASSWORD ? process.env.DATABASE_PASSWORD : 'postgres',
     database: 'eventsourcing_star_wars',
-    entities: [__dirname + '/**/*.entity{.ts,.js}'],
+    entities: [__dirname + '/**/*.typeorm-entity{.ts,.js}'],
     synchronize: true,
 });
 

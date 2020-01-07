@@ -26,9 +26,18 @@ import {SoldiersTransferSaga} from './write/application/soldiers-transfer.saga';
 import {ArmyController} from './write/presentation/rest/army.controller';
 import {TypeOrmEventStore} from './write/infrastructure/event-store.typeorm';
 import {TypeOrmModule} from '@nestjs/typeorm';
+import {DomainEventEntity} from './write/infrastructure/event.typeorm-entity';
+import {Type} from '@nestjs/common/interfaces/type.interface';
+import {DynamicModule} from '@nestjs/common/interfaces/modules/dynamic-module.interface';
+import {ForwardReference} from '@nestjs/common/interfaces/modules/forward-reference.interface';
+
+const modules: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [CqrsModule];
+if ('typeorm' === process.env.DATABASE_MODE) {
+    modules.push(TypeOrmModule.forFeature([DomainEventEntity]));
+}
 
 @Module({
-    imports: [CqrsModule, TypeOrmModule.forFeature()],
+    imports: [...modules],
     controllers: [StarshipsController, FleetStateController, ArmyController],
     providers: [
         {
