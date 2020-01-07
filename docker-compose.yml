@@ -1,0 +1,36 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:12
+    restart: always
+    ports:
+      - "5002:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: eventsourcing_star_wars
+    volumes:
+      - ../pgdata:/var/lib/postgresql/data
+#  nestjs-server:
+#    depends_on:
+#      - postgres
+#    ports:
+#      - "5000:3000"
+#    build:
+#      context: .
+#    environment:
+#      DATABASE_MODE: in-memory
+#      DATABASE_HOST: postgres
+#      DATABASE_PORT: 5002
+#      DATABASE_USERNAME: postgres
+#      DATABASE_PASSWORD: postgres
+#    command: "npm run start:dev"
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@coderscrew.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+    ports:
+      - "5001:80"
+    depends_on:
+      - postgres
