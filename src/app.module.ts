@@ -24,7 +24,7 @@ const modules = [
     RebelStarshipsAnemicModule,
 ];
 
-if ('typeorm' === 'typeorm') {//process.env.DATABASE_MODE)
+if ('typeorm' === process.env.DATABASE_MODE) {
     modules.push(typeOrmModule);
 }
 
