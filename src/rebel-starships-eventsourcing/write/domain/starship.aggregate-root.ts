@@ -10,6 +10,7 @@ import StarshipRepaired = StarshipDomainEvent.StarshipRepaired;
 import StarshipDestroyed = StarshipDomainEvent.StarshipDestroyed;
 import StarshipCaptured = StarshipDomainEvent.StarshipCaptured;
 
+// TODO: Może żołnierze? I nie można wysłać starship bez żołnierzy?
 export class Starship extends AggregateRoot {
 
     private id: StarshipId;
