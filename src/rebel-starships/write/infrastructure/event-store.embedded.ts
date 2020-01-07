@@ -16,6 +16,8 @@ export class InMemoryEventStore implements EventStore {
         const foundStream = this.eventStreams[event.aggregateId];
         if (!foundStream) {
             this.eventStreams[event.aggregateId] = [event];
+        } else {
+            this.eventStreams[event.aggregateId].push(event);
         }
         return Promise.resolve();
     }

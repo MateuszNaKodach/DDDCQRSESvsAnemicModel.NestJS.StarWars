@@ -32,7 +32,10 @@ export class Starship extends AggregateRoot {
         if (this.fraction === Fraction.REBELLION) {
             throw new Error('Do not attack ally starship!');
         }
-        if (this.condition.smallerOrEqualsTo(power)) {
+        if (this.isDestroyed()) {
+            throw new Error('Starship already destroyed!');
+        }
+        if (this.condition.isGraterThan(power)) {
             this.apply(
                 StarshipAttacked.newFrom(this.id, this.timeProvider.currentDate(), {
                     fraction: this.fraction,
@@ -54,6 +57,9 @@ export class Starship extends AggregateRoot {
         if (this.fraction === Fraction.EMPIRE) {
             throw new Error('Do not repair enemy starship!');
         }
+        if (this.isDestroyed()) {
+            throw new Error('Starship already destroyed!');
+        }
         this.apply(StarshipRepaired.newFrom(this.id, this.timeProvider.currentDate(), {fraction: this.fraction, repaired: by}));
     }
 
@@ -61,18 +67,37 @@ export class Starship extends AggregateRoot {
         if (this.fraction === by) {
             throw new Error(`Starship already belongs to ${by}!`);
         }
+        if (this.isDestroyed()) {
+            throw new Error('Starship already destroyed!');
+        }
         this.apply(
             StarshipCaptured.newFrom(this.id, this.timeProvider.currentDate(), {
                 from: this.fraction,
                 by: this.fraction,
                 importance: this.importance,
-            })
+            }),
         );
+    }
+
+    private isDestroyed(): boolean {
+        return this.condition.isZero();
     }
 
     onStarshipSentToBattle(event: StarshipSentToBattle) {
         this.id = event.aggregateId;
         this.fraction = event.payload.fraction;
         this.condition = Condition.full();
+    }
+
+    onStarshipAttacked(event: StarshipAttacked) {
+        this.condition = this.condition.minus(event.payload.power);
+    }
+
+    onStarshipRepaired(event: StarshipRepaired) {
+        this.condition = this.condition.plus(event.payload.repaired);
+    }
+
+    onStarshipCaptured(event: StarshipCaptured) {
+        this.fraction = event.payload.from;
     }
 }

@@ -32,7 +32,7 @@ export namespace StarshipCommand {
     export class CaptureStarship {
         constructor(
             readonly target: StarshipId,
-            readonly forFraction: Fraction,
+            readonly by: Fraction,
         ) {
         }
     }
