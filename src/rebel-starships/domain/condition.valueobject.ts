@@ -19,4 +19,8 @@ export class Condition {
         return new Condition(this.points - points);
     }
 
+    smallerOrEqualsTo(another: Condition): boolean {
+        return this.points <= another.points;
+    }
+
 }

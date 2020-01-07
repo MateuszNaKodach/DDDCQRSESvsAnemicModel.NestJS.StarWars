@@ -1,5 +1,5 @@
 import uuid = require('uuid');
-import {AggregateId} from '../../nest-event-sourcing/aggregate-id.valueobject';
+import {AggregateId} from '../infrastructure/aggregate-id.valueobject';
 
 export class StarshipId implements AggregateId {
     private constructor(readonly raw: string) {

@@ -1,8 +1,5 @@
 import {Injectable} from '@nestjs/common';
-
-export interface TimeProvider {
-    currentDate(): Date;
-}
+import {TimeProvider} from '../application/time.provider';
 
 @Injectable()
 export class DateTimeProvider implements TimeProvider {

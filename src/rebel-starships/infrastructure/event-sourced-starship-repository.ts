@@ -3,12 +3,12 @@ import {EventStore} from './event-store';
 import {StarshipRepository} from '../domain/starship.repository';
 import {StarshipId} from '../domain/starship-id.valueobject';
 import {Starship} from '../domain/starship.aggregate-root';
-import {DomainEvent} from '../../nest-event-sourcing/domain-event';
-import {StarshipEvents} from '../domain/starship.events';
-import {TimeProvider} from '../../nest-time-provider/time.provider';
+import {DomainEvent} from './domain-event';
+import {TimeProvider} from '../application/time.provider';
 import {Inject, Injectable} from '@nestjs/common';
 import {StoreDomainEventEntry} from './store-domain-event-entry';
-import {DomainEventId} from '../../nest-event-sourcing/domain-event-id.valueobject';
+import {DomainEventId} from './domain-event-id.valueobject';
+import {StarshipDomainEvent} from '../domain/starship.domain-events';
 
 @Injectable()
 export class EventSourcedStarshipRepository implements StarshipRepository {
@@ -29,7 +29,7 @@ export class EventSourcedStarshipRepository implements StarshipRepository {
 
     private static recreateEventFromStored(event: StoreDomainEventEntry) {
         try {
-            return new StarshipEvents[event.eventType]
+            return new StarshipDomainEvent[event.eventType]
             (DomainEventId.of(event.eventId), event.occurredAt, StarshipId.of(event.aggregateId), event.payload);
         } catch (error) {
             throw new Error('UNHANDLED_EVENT_RECONSTRUCTION');

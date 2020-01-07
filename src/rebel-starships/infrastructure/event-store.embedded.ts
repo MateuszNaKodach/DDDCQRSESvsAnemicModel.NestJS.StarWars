@@ -1,5 +1,5 @@
 import {EventStore} from './event-store';
-import {TimeProvider} from '../../nest-time-provider/time.provider';
+import {TimeProvider} from '../application/time.provider';
 import * as moment from 'moment';
 import {Inject, Injectable} from '@nestjs/common';
 import {StoreDomainEventEntry} from './store-domain-event-entry';
@@ -21,8 +21,7 @@ export class InMemoryEventStore implements EventStore {
     }
 
     storeAll(events: StoreDomainEventEntry[]): Promise<void> {
-        return Promise.all(events.map(it => this.store(it)))
-            .then();
+        return Promise.all(events.map(it => this.store(it))).then();
     }
 
     readEvents(aggregateId: string, toDate?: Date) {
