@@ -1,10 +1,10 @@
 import {Module} from '@nestjs/common';
-import {RebelStarshipsController} from './rebel-starships.controller';
-import {RebelStarshipsService} from './rebel-starships.service';
+import {StarshipsController} from './starships.controller';
+import {StarshipsService} from './starships.service';
 
 @Module({
-    controllers: [RebelStarshipsController],
-    providers: [RebelStarshipsService],
+    controllers: [StarshipsController],
+    providers: [StarshipsService],
 })
 export class RebelStarshipsAnemicModule {
 }
