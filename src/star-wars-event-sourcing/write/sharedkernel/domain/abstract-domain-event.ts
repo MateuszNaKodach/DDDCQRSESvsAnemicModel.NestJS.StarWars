@@ -18,4 +18,6 @@ export abstract class AbstractDomainEvent<I extends AggregateId = AggregateId, T
     get eventType(): string {
         return Object.getPrototypeOf(this).constructor.name;
     }
+
+    abstract get aggregateType(): string;
 }

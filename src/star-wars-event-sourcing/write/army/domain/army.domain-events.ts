@@ -4,10 +4,14 @@ import {AbstractDomainEvent} from '../../sharedkernel/domain/abstract-domain-eve
 import {ArmyId} from '../../sharedkernel/domain/army-id.valueobject';
 import {Fraction} from '../../sharedkernel/domain/fraction.enum';
 import {Soldier} from './soldier.entity';
+import {Army} from './army.aggregate-root';
 
 export namespace ArmyDomainEvent {
 
     abstract class AbstractArmyDomainEvent<P = any> extends AbstractDomainEvent<ArmyId, P> {
+        get aggregateType(): string {
+            return Army.constructor.name;
+        }
     }
 
     export class SoldiersRecruited extends AbstractArmyDomainEvent<{ fraction: Fraction, soldiers: Soldier[] }> {

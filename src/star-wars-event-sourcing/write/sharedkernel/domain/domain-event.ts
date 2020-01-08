@@ -7,5 +7,6 @@ export interface DomainEvent<I extends AggregateId = AggregateId, T = any> exten
     readonly occurredAt: Date;
     readonly eventType: string;
     readonly aggregateId: I;
+    readonly aggregateType: string;
     readonly payload: T;
 }

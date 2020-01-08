@@ -46,6 +46,7 @@ export abstract class EventSourcedAggregateRootRepository<T extends AggregateRoo
         return {
             eventId: event.eventId.raw,
             aggregateId: event.aggregateId.raw,
+            aggregateType: event.aggregateType,
             occurredAt: event.occurredAt,
             eventType: event.eventType,
             payload: event.payload,

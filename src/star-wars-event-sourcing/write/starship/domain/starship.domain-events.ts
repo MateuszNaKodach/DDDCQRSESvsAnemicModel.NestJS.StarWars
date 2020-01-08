@@ -4,10 +4,14 @@ import {DomainEventId} from '../../sharedkernel/domain/domain-event-id.valueobje
 import {AbstractDomainEvent} from '../../sharedkernel/domain/abstract-domain-event';
 import {Condition} from './condition.valueobject';
 import {Soldier} from '../../army/domain/soldier.entity';
+import {Starship} from './starship.aggregate-root';
 
 export namespace StarshipDomainEvent {
 
     abstract class AbstractStarshipDomainEvent<P = any> extends AbstractDomainEvent<StarshipId, P> {
+        get aggregateType(): string {
+            return Starship.constructor.name;
+        }
     }
 
     export class StarshipPrepared extends AbstractStarshipDomainEvent<{ fraction: Fraction }> {
