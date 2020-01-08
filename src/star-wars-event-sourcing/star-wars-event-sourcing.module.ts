@@ -72,7 +72,7 @@ if ('typeorm' === process.env.DATABASE_MODE) {
         SoldiersTransferSaga,
     ],
 })
-export class RebelStarshipsEventSourcingModule implements OnModuleInit {
+export class StarWarsEventSourcingModule implements OnModuleInit {
 
     constructor(private readonly commandBus: CommandBus) {
     }

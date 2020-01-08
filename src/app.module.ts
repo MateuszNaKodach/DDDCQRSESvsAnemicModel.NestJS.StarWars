@@ -1,10 +1,10 @@
 import {Module} from '@nestjs/common';
-import {RebelStarshipsEventSourcingModule} from './rebel-starships-eventsourcing/rebel-starships-event-sourcing.module';
-import {RebelStarshipsAnemicModule} from './rebel-starships-anemic/rebel-starships-anemic.module';
 import {ConfigModule} from '@nestjs/config';
 import database from '../config/database';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import modules from '../config/modules';
+import {StarWarsEventSourcingModule} from './star-wars-event-sourcing/star-wars-event-sourcing.module';
+import {StarWarsAnemicModule} from './star-wars-anemic/star-wars-anemic.module';
 
 //Jak użyć config service tutaj: https://docs.nestjs.com/techniques/database  Async
 
@@ -23,8 +23,8 @@ const modulesToImport = [
     ConfigModule.forRoot({
         load: [modules, database],
     }),
-    RebelStarshipsEventSourcingModule,
-    RebelStarshipsAnemicModule,
+    StarWarsEventSourcingModule,
+    StarWarsAnemicModule,
 ];
 
 if ('typeorm' === process.env.DATABASE_MODE) {

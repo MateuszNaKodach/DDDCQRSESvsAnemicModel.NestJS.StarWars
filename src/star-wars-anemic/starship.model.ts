@@ -1,4 +1,4 @@
-import {Fraction} from '../rebel-starships-eventsourcing/write/domain/fraction.enum';
+import {Fraction} from '../star-wars-event-sourcing/write/domain/fraction.enum';
 
 export class Starship {
     readonly id: string;

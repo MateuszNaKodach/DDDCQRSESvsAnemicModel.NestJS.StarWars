@@ -6,5 +6,5 @@ import {StarshipsService} from './starships.service';
     controllers: [StarshipsController],
     providers: [StarshipsService],
 })
-export class RebelStarshipsAnemicModule {
+export class StarWarsAnemicModule {
 }
