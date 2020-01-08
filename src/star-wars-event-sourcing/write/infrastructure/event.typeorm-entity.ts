@@ -4,7 +4,7 @@ import {
 } from 'typeorm';
 import {StoreDomainEventEntry} from './store-domain-event-entry';
 
-@Entity({name: 'domain_events', orderBy: {occurredAt: 'ASC'}})
+@Entity({name: 'eventsourcing_domain_events', orderBy: {occurredAt: 'ASC'}})
 @Index(['aggregateId', 'order'], {unique: true})
 export class DomainEventEntity implements StoreDomainEventEntry {
     @PrimaryColumn()

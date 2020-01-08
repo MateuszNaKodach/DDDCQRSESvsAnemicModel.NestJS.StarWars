@@ -17,7 +17,7 @@ export namespace StarshipCommand {
         }
     }
 
-    export class AttackStarship {
+    export class ReportStarshipAttack {
         constructor(
             readonly target: StarshipId,
             readonly power: Condition,

@@ -7,7 +7,7 @@ import {Fraction} from '../domain/fraction.enum';
 import StarshipCaptured = StarshipDomainEvent.StarshipCaptured;
 import {Condition} from '../domain/condition.valueobject';
 import {StarshipCommand} from './starship.commands';
-import AttackStarship = StarshipCommand.AttackStarship;
+import AttackStarship = StarshipCommand.ReportStarshipAttack;
 
 @Injectable()
 export class AttackStarshipCapturedByEmpireSaga {

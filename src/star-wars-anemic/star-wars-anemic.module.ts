@@ -1,6 +1,6 @@
 import {Module} from '@nestjs/common';
-import {StarshipsController} from './starships.controller';
-import {StarshipsService} from './starships.service';
+import {StarshipsController} from './starship/starships.controller';
+import {StarshipsService} from './starship/starships.service';
 
 @Module({
     controllers: [StarshipsController],

@@ -40,10 +40,7 @@ export class Starship extends AggregateRoot {
         this.apply(StarshipSentToBattle.newFrom(this.id, this.timeProvider.currentDate(), {fraction: this.fraction}));
     }
 
-    attack(power: Condition) {
-        if (this.fraction === Fraction.REBELLION) {
-            throw new Error('Do not attack ally starship!');
-        }
+    reportAttack(power: Condition) {
         if (this.isDestroyed()) {
             throw new Error('Starship already destroyed!');
         }

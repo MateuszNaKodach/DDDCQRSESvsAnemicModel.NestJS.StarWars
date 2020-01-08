@@ -5,7 +5,7 @@ import {StarshipId} from '../../domain/starship-id.valueobject';
 import {Fraction} from '../../domain/fraction.enum';
 import {StarshipCommand} from '../../application/starship.commands';
 import SendStarshipToBattle = StarshipCommand.SendStarshipToBattle;
-import AttackStarship = StarshipCommand.AttackStarship;
+import AttackStarship = StarshipCommand.ReportStarshipAttack;
 import {Condition} from '../../domain/condition.valueobject';
 import {RepairStarshipRequestBody} from './repair-starship.request-body';
 import RepairStarship = StarshipCommand.RepairStarship;

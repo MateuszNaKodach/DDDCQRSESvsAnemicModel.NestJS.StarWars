@@ -17,16 +17,16 @@ export class TypeOrmEventStore implements EventStore {
     }
 
     async store(event: StoreDomainEventEntry, expectedVersion?: EventStreamVersion): Promise<void> {
-        const aggregateEvents = await this.typeOrmRepository.find({where: {aggregateId: event.aggregateId}});
-        const nextEventOrder = aggregateEvents.length + 1;
+        const aggregateEvents = await this.typeOrmRepository.count({where: {aggregateId: event.aggregateId}});
+        const nextEventOrder = aggregateEvents + 1;
         const typeOrmDomainEvent = DomainEventEntity.fromProps({...event, order: nextEventOrder});
         return this.typeOrmRepository.save(typeOrmDomainEvent).then();
     }
 
     //TODO: Check if events are from one stream!
     async storeAll(events: StoreDomainEventEntry[]): Promise<void> {
-        const aggregateEvents = await this.typeOrmRepository.find({where: {aggregateId: events[0].aggregateId}});
-        const nextEventOrder = aggregateEvents.length + 1;
+        const aggregateEvents = await this.typeOrmRepository.count({where: {aggregateId: events[0].aggregateId}});
+        const nextEventOrder = aggregateEvents + 1;
         const typeOrmEvents = events.map((e, i) => DomainEventEntity.fromProps({...e, order: nextEventOrder + i}));
         return this.typeOrmRepository.save(typeOrmEvents).then();
     }

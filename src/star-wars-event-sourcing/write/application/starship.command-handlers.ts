@@ -44,19 +44,19 @@ export namespace StarshipCommandHandler {
 
     }
 
-    @CommandHandler(StarshipCommand.AttackStarship)
-    export class AttackStarship implements ICommandHandler<StarshipCommand.AttackStarship> {
+    @CommandHandler(StarshipCommand.ReportStarshipAttack)
+    export class ReportStarshipAttack implements ICommandHandler<StarshipCommand.ReportStarshipAttack> {
 
         constructor(
             @Inject('StarshipRepository') private starshipRepository: StarshipRepository,
         ) {
         }
 
-        async execute(command: StarshipCommand.AttackStarship) {
+        async execute(command: StarshipCommand.ReportStarshipAttack) {
             return executeCommand(
                 this.starshipRepository,
                 command.target,
-                starship => starship.attack(command.power),
+                starship => starship.reportAttack(command.power),
             );
         }
 
@@ -146,11 +146,11 @@ export namespace StarshipCommandHandler {
     export const All = [
         PrepareNewStarship,
         SendStarshipToBattle,
-        AttackStarship,
+        ReportStarshipAttack,
         RepairStarship,
         CaptureStarship,
         AddSoldiersToStarshipCrew,
-        SendSoldiersBackToArmy
+        SendSoldiersBackToArmy,
     ];
 
 }

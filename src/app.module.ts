@@ -24,7 +24,6 @@ const modulesToImport = [
         load: [modules, database],
     }),
     StarWarsEventSourcingModule,
-    StarWarsAnemicModule,
 ];
 
 if ('typeorm' === process.env.DATABASE_MODE) {
