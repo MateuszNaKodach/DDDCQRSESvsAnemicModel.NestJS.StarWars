@@ -1,5 +1,5 @@
 import {Injectable} from '@nestjs/common';
-import {Fraction} from '../../star-wars-event-sourcing/write/domain/fraction.enum';
+import {Fraction} from '../../star-wars-event-sourcing/write/sharedkernel/domain/fraction.enum';
 import {InjectRepository} from '@nestjs/typeorm';
 import {Army} from './army.typeorm-entity';
 import {Repository} from 'typeorm';

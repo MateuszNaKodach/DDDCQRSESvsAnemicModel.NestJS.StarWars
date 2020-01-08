@@ -3,7 +3,7 @@ import {InjectRepository} from '@nestjs/typeorm';
 import {Repository} from 'typeorm';
 import {Starship} from './starship.typeorm-entity';
 import {Soldier} from '../army/soldier.typeorm-entity';
-import {Fraction} from '../../star-wars-event-sourcing/write/domain/fraction.enum';
+import {Fraction} from '../../star-wars-event-sourcing/write/sharedkernel/domain/fraction.enum';
 
 @Injectable()
 export class StarshipsService {

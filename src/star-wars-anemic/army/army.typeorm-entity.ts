@@ -1,5 +1,5 @@
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
-import {Fraction} from '../../star-wars-event-sourcing/write/domain/fraction.enum';
+import {Fraction} from '../../star-wars-event-sourcing/write/sharedkernel/domain/fraction.enum';
 import {Soldier} from './soldier.typeorm-entity';
 
 @Entity({name: 'anemic_army'})
