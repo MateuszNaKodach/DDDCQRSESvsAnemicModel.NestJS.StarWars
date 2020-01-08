@@ -9,8 +9,8 @@ export class Starship {
     @Column()
     fraction: Fraction;
 
-    @Column()
-    condition: number;
+    @Column({nullable: true})
+    condition?: number;
 
     @Column()
     inBattle: boolean = false;

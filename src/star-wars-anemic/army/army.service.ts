@@ -24,6 +24,9 @@ export class ArmyService {
     async orderSoldiersToStarshipTransfer(armyId: string, soldiersCount: number, starshipId: string): Promise<void> {
         const army = await this.armyRepository.findOne({where: {id: armyId}, relations: ['soldiers']});
         const starship = await this.starshipRepository.findOne({where: {id: starshipId}});
+        if (!starship) {
+            throw new Error('Starship not found!');
+        }
         const soldiersNotOnStarship = army.soldiers.filter(it => !it.starship);
         if (soldiersNotOnStarship.length < soldiersCount) {
             throw new Error(`No sufficient count of soldiers to transfer to starship! Only ${soldiersNotOnStarship.length} left.`);
