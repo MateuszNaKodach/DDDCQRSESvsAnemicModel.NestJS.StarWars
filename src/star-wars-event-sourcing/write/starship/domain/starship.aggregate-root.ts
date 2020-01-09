@@ -30,14 +30,14 @@ export class Starship extends AggregateRoot {
     }
 
     prepare(id: StarshipId, fraction: Fraction) {
-        this.apply(StarshipPrepared.newFrom(id, this.timeProvider.currentDate(), {fraction}));
+        this.apply(StarshipPrepared.newFrom(id, this.getCurrentDate(), {fraction}));
     }
 
     sendToBattle() {
         if (this.crew.length === 0) {
             throw new Error('Cannot send to battle starship without crew!');
         }
-        this.apply(StarshipSentToBattle.newFrom(this.id, this.timeProvider.currentDate(), {fraction: this.fraction}));
+        this.apply(StarshipSentToBattle.newFrom(this.id, this.getCurrentDate(), {fraction: this.fraction}));
     }
 
     reportAttack(power: Condition) {
@@ -46,14 +46,14 @@ export class Starship extends AggregateRoot {
         }
         if (this.condition.isGraterThan(power)) {
             this.apply(
-                StarshipAttacked.newFrom(this.id, this.timeProvider.currentDate(), {
+                StarshipAttacked.newFrom(this.id, this.getCurrentDate(), {
                     fraction: this.fraction,
                     power,
                 }),
             );
         } else {
             this.apply(
-                StarshipDestroyed.newFrom(this.id, this.timeProvider.currentDate(), {
+                StarshipDestroyed.newFrom(this.id, this.getCurrentDate(), {
                     fraction: this.fraction,
                 }),
             );
@@ -67,7 +67,7 @@ export class Starship extends AggregateRoot {
         if (this.isDestroyed()) {
             throw new Error('Starship already destroyed!');
         }
-        this.apply(StarshipRepaired.newFrom(this.id, this.timeProvider.currentDate(), {fraction: this.fraction, repaired: by}));
+        this.apply(StarshipRepaired.newFrom(this.id, this.getCurrentDate(), {fraction: this.fraction, repaired: by}));
     }
 
     capture(by: Fraction) {
@@ -78,7 +78,7 @@ export class Starship extends AggregateRoot {
             throw new Error('Starship already destroyed!');
         }
         this.apply(
-            StarshipCaptured.newFrom(this.id, this.timeProvider.currentDate(), {
+            StarshipCaptured.newFrom(this.id, this.getCurrentDate(), {
                 from: this.fraction,
                 by: this.fraction,
                 with: this.condition,
@@ -91,7 +91,7 @@ export class Starship extends AggregateRoot {
             throw new Error('Do not send soldiers to enemy starship crew!');
         }
         this.apply(
-            SoldiersAddedToStarshipCrew.newFrom(this.id, this.timeProvider.currentDate(), {
+            SoldiersAddedToStarshipCrew.newFrom(this.id, this.getCurrentDate(), {
                 fraction: this.fraction,
                 soldiers,
             }),
@@ -103,7 +103,7 @@ export class Starship extends AggregateRoot {
             throw new Error(`You have to leave at least on soldier on the starship during the battle!`);
         }
         this.apply(
-            SoldiersSentBackToArmy.newFrom(this.id, this.timeProvider.currentDate(), {
+            SoldiersSentBackToArmy.newFrom(this.id, this.getCurrentDate(), {
                 fraction: this.fraction,
                 soldiers: this.crew.slice(soldiersCount, this.crew.length),
             }),
@@ -147,5 +147,9 @@ export class Starship extends AggregateRoot {
 
     onSoldiersSentBackToArmy(event: SoldiersSentBackToArmy) {
         this.crew = this.crew.slice(0, event.payload.soldiers.length);
+    }
+
+    private getCurrentDate() {
+        return this.timeProvider.currentDate();
     }
 }
