@@ -121,6 +121,7 @@ export class Starship extends AggregateRoot {
 
     onStarshipSentToBattle(event: StarshipSentToBattle) {
         this.condition = Condition.full();
+        this.inBattle = true;
     }
 
     onStarshipAttacked(event: StarshipAttacked) {
@@ -129,6 +130,7 @@ export class Starship extends AggregateRoot {
 
     onStarshipDestroyed(event: StarshipDestroyed) {
         this.condition = Condition.zero();
+        this.inBattle = false;
     }
 
     onStarshipRepaired(event: StarshipRepaired) {
