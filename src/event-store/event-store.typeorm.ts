@@ -18,6 +18,9 @@ export class TypeOrmEventStore implements EventStore {
 
     async store(event: StoreDomainEventEntry, expectedVersion?: EventStreamVersion): Promise<void> {
         const aggregateEvents = await this.typeOrmRepository.count({where: {aggregateId: event.aggregateId}});
+        if (expectedVersion && expectedVersion.raw !== aggregateEvents) {
+            throw new Error(`Event stream for aggregate was modified! Expected version: ${expectedVersion.raw}, but actual is: ${aggregateEvents}`);
+        }
         const nextEventOrder = aggregateEvents + 1;
         const typeOrmDomainEvent = DomainEventEntity.fromProps({...event, order: nextEventOrder});
         return this.typeOrmRepository.save(typeOrmDomainEvent).then();
