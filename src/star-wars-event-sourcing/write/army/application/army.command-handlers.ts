@@ -13,7 +13,7 @@ export namespace ArmyCommandHandler {
 
         constructor(
             @Inject('ArmyRepository') private armyRepository: ArmyRepository,
-            @Inject() private timeProvider: TimeProvider,
+            @Inject(TimeProvider) private timeProvider: TimeProvider,
         ) {
         }
 

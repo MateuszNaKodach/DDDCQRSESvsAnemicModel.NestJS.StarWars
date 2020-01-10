@@ -13,8 +13,8 @@ import {EventSourcedAggregateRootRepository} from '../../sharedkernel/infrastruc
 @Injectable()
 export class EventSourcedStarshipRepository extends EventSourcedAggregateRootRepository<Starship, Starship['id']> {
 
-    constructor(@Inject() timeProvider: TimeProvider,
-                @Inject()  eventStore: EventStore,
+    constructor(@Inject(TimeProvider) timeProvider: TimeProvider,
+                @Inject(EventStore)  eventStore: EventStore,
                 eventPublisher: EventPublisher,
     ) {
         super(timeProvider, eventStore, eventPublisher);

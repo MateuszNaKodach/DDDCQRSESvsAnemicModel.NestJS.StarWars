@@ -16,8 +16,8 @@ import {ArmyId} from '../../sharedkernel/domain/army-id.valueobject';
 @Injectable()
 export class EventSourcedArmyRepository extends EventSourcedAggregateRootRepository<Army, Army['id']> {
 
-    constructor(@Inject() timeProvider: TimeProvider,
-                @Inject()  eventStore: EventStore,
+    constructor(@Inject(TimeProvider) timeProvider: TimeProvider,
+                @Inject(EventStore)  eventStore: EventStore,
                 eventPublisher: EventPublisher,
     ) {
         super(timeProvider, eventStore, eventPublisher);

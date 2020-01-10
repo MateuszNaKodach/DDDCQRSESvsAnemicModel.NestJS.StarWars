@@ -13,7 +13,7 @@ export namespace StarshipCommandHandler {
 
         constructor(
             @Inject('StarshipRepository') private starshipRepository: StarshipRepository,
-            @Inject() private timeProvider: TimeProvider,
+            @Inject(TimeProvider) private timeProvider: TimeProvider,
         ) {
         }
 

@@ -12,7 +12,7 @@ import {Repository} from 'typeorm';
 export class TypeOrmEventStore implements EventStore {
 
     constructor(
-        @Inject() private readonly timeProvider: TimeProvider,
+        @Inject(TimeProvider) private readonly timeProvider: TimeProvider,
         @InjectRepository(DomainEventEntity) private readonly typeOrmRepository: Repository<DomainEventEntity>) {
     }
 

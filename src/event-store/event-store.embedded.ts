@@ -10,7 +10,7 @@ export class InMemoryEventStore implements EventStore {
 
     private eventStreams: { [key: string]: StoreDomainEventEntry[]; } = {};
 
-    constructor(@Inject() private readonly timeProvider: TimeProvider) {
+    constructor(@Inject(TimeProvider) private readonly timeProvider: TimeProvider) {
     }
 
     store(event: StoreDomainEventEntry, expectedVersion?: EventStreamVersion): Promise<void> {
