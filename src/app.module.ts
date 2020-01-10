@@ -5,6 +5,9 @@ import {TypeOrmModule} from '@nestjs/typeorm';
 import modules from '../config/modules';
 import {StarWarsEventSourcingModule} from './star-wars-event-sourcing/star-wars-event-sourcing.module';
 import {StarWarsAnemicModule} from './star-wars-anemic/star-wars-anemic.module';
+import {Type} from '@nestjs/common/interfaces/type.interface';
+import {DynamicModule} from '@nestjs/common/interfaces/modules/dynamic-module.interface';
+import {ForwardReference} from '@nestjs/common/interfaces/modules/forward-reference.interface';
 
 //Jak użyć config service tutaj: https://docs.nestjs.com/techniques/database  Async
 
@@ -19,16 +22,16 @@ const typeOrmModule = TypeOrmModule.forRoot({
     synchronize: true,
 });
 
-const modulesToImport = [
+const modulesToImport: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [
     ConfigModule.forRoot({
         load: [modules, database],
     }),
     StarWarsEventSourcingModule,
-    StarWarsAnemicModule,
 ];
 
 if ('typeorm' === process.env.DATABASE_MODE) {
     modulesToImport.push(typeOrmModule);
+    modulesToImport.push(StarWarsAnemicModule);
 }
 
 @Module({
