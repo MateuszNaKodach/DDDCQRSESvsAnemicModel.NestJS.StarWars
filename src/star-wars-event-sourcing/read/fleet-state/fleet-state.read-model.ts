@@ -7,4 +7,5 @@ export class FleetState {
     starshipsInBattle: number;
     destroyedStarships: number;
     attacked: number;
+    soldiersTransfers: number;
 }

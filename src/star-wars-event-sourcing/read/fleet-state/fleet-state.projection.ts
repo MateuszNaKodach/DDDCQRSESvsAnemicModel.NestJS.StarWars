@@ -33,6 +33,23 @@ export namespace FleetStateProjection {
             return eventProjection(this.fleetStateRepository, event.payload.fraction, state => ({
                 ...state,
                 starshipsWithoutCrew: state.starshipsWithoutCrew--,
+                soldiersTransfers: state.soldiersTransfers++,
+            }));
+        }
+
+    }
+
+    @EventsHandler(StarshipDomainEvent.SoldiersSentBackToArmy)
+    export class SoldiersSentBackToArmy implements IEventHandler<StarshipDomainEvent.SoldiersSentBackToArmy> {
+
+        constructor(@Inject('FleetStateRepository') private fleetStateRepository: FleetStateRepository) {
+        }
+
+        async handle(event: StarshipDomainEvent.SoldiersSentBackToArmy) {
+            return eventProjection(this.fleetStateRepository, event.payload.fraction, state => ({
+                ...state,
+                starshipsWithoutCrew: state.starshipsWithoutCrew++,
+                soldiersTransfers: state.soldiersTransfers++,
             }));
         }
 
@@ -94,6 +111,7 @@ export namespace FleetStateProjection {
                 attacked: 0,
                 starshipsWithoutCrew: 0,
                 preparedStarships: 0,
+                soldiersTransfers: 0,
             });
         projection(fleetState);
         return repository.save(fleetState);
