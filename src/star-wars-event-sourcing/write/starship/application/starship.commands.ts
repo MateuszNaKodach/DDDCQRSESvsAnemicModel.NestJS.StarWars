@@ -1,7 +1,7 @@
 import {StarshipId} from '../domain/starship-id.valueobject';
 import {Fraction} from '../../sharedkernel/domain/fraction.enum';
 import {Condition} from '../domain/condition.valueobject';
-import {Soldier} from '../../army/domain/soldier.entity';
+import {Soldier} from '../../sharedkernel/domain/soldier.entity';
 
 export namespace StarshipCommand {
 

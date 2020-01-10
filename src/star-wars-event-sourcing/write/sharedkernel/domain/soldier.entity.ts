@@ -1,4 +1,4 @@
-import {SoldierId} from '../../sharedkernel/domain/soldier-id.valueobject';
+import {SoldierId} from './soldier-id.valueobject';
 
 export class Soldier {
     constructor(readonly id: SoldierId) {

@@ -1,5 +1,5 @@
 import {Fraction} from '../../sharedkernel/domain/fraction.enum';
-import {Soldier} from './soldier.entity';
+import {Soldier} from '../../sharedkernel/domain/soldier.entity';
 import {AggregateRoot} from '@nestjs/cqrs';
 import {TimeProvider} from '../../sharedkernel/application/time.provider';
 import {StarshipId} from '../../starship/domain/starship-id.valueobject';

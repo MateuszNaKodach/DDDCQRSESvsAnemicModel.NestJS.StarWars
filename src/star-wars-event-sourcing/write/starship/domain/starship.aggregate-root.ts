@@ -9,7 +9,7 @@ import StarshipAttacked = StarshipDomainEvent.StarshipAttacked;
 import StarshipRepaired = StarshipDomainEvent.StarshipRepaired;
 import StarshipDestroyed = StarshipDomainEvent.StarshipDestroyed;
 import StarshipCaptured = StarshipDomainEvent.StarshipCaptured;
-import {Soldier} from '../../army/domain/soldier.entity';
+import {Soldier} from '../../sharedkernel/domain/soldier.entity';
 import SoldiersAddedToStarshipCrew = StarshipDomainEvent.SoldiersAddedToStarshipCrew;
 import SoldiersSentBackToArmy = StarshipDomainEvent.SoldiersSentBackToArmy;
 import StarshipPrepared = StarshipDomainEvent.StarshipPrepared;

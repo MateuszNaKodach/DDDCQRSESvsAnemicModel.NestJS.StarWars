@@ -3,7 +3,7 @@ import {Fraction} from '../../sharedkernel/domain/fraction.enum';
 import {DomainEventId} from '../../sharedkernel/domain/domain-event-id.valueobject';
 import {AbstractDomainEvent} from '../../sharedkernel/domain/abstract-domain-event';
 import {Condition} from './condition.valueobject';
-import {Soldier} from '../../army/domain/soldier.entity';
+import {Soldier} from '../../sharedkernel/domain/soldier.entity';
 import {Starship} from './starship.aggregate-root';
 
 export namespace StarshipDomainEvent {

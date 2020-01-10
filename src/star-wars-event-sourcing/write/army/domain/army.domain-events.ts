@@ -3,7 +3,7 @@ import {DomainEventId} from '../../sharedkernel/domain/domain-event-id.valueobje
 import {AbstractDomainEvent} from '../../sharedkernel/domain/abstract-domain-event';
 import {ArmyId} from '../../sharedkernel/domain/army-id.valueobject';
 import {Fraction} from '../../sharedkernel/domain/fraction.enum';
-import {Soldier} from './soldier.entity';
+import {Soldier} from '../../sharedkernel/domain/soldier.entity';
 import {Army} from './army.aggregate-root';
 
 export namespace ArmyDomainEvent {
