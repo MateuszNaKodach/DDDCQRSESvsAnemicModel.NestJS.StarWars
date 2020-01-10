@@ -1,9 +1,9 @@
 import {EventPublisher} from '@nestjs/cqrs';
-import {EventStore} from '../../sharedkernel/infrastructure/event-store';
+import {EventStore} from '../../../../event-store/event-store';
 import {StarshipId} from '../../starship/domain/starship-id.valueobject';
 import {Starship} from '../../starship/domain/starship.aggregate-root';
 import {DomainEvent} from '../../sharedkernel/domain/domain-event';
-import {TimeProvider} from '../../sharedkernel/application/time.provider';
+import {TimeProvider} from '../../../../event-store/time.provider';
 import {Inject, Injectable} from '@nestjs/common';
 import {StoreDomainEventEntry} from '../../sharedkernel/infrastructure/store-domain-event-entry';
 import {DomainEventId} from '../../sharedkernel/domain/domain-event-id.valueobject';
@@ -16,8 +16,8 @@ import {ArmyId} from '../../sharedkernel/domain/army-id.valueobject';
 @Injectable()
 export class EventSourcedArmyRepository extends EventSourcedAggregateRootRepository<Army, Army['id']> {
 
-    constructor(@Inject('TimeProvider') timeProvider: TimeProvider,
-                @Inject('EventStore')  eventStore: EventStore,
+    constructor(@Inject() timeProvider: TimeProvider,
+                @Inject()  eventStore: EventStore,
                 eventPublisher: EventPublisher,
     ) {
         super(timeProvider, eventStore, eventPublisher);

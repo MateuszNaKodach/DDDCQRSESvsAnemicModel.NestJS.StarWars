@@ -1,7 +1,7 @@
 import {CommandHandler, ICommandHandler} from '@nestjs/cqrs';
 import {Inject} from '@nestjs/common';
 import {StarshipRepository} from '../domain/starship.repository';
-import {TimeProvider} from '../../sharedkernel/application/time.provider';
+import {TimeProvider} from '../../../../event-store/time.provider';
 import {StarshipId} from '../domain/starship-id.valueobject';
 import {Starship} from '../domain/starship.aggregate-root';
 import {StarshipCommand} from './starship.commands';
@@ -13,7 +13,7 @@ export namespace StarshipCommandHandler {
 
         constructor(
             @Inject('StarshipRepository') private starshipRepository: StarshipRepository,
-            @Inject('TimeProvider') private timeProvider: TimeProvider,
+            @Inject() private timeProvider: TimeProvider,
         ) {
         }
 

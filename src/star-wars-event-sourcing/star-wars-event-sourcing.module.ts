@@ -2,8 +2,6 @@ import {Module, OnModuleInit} from '@nestjs/common';
 import {StarshipsController} from './write/starship/presentation/rest/starships.controller';
 import {CommandBus, CqrsModule} from '@nestjs/cqrs';
 import {EventSourcedStarshipRepository} from './write/starship/infrastructure/event-sourced-starship-repository';
-import {InMemoryEventStore} from './write/sharedkernel/infrastructure/event-store.embedded';
-import {SystemTimeProvider} from './write/sharedkernel/infrastructure/system-time-provider.service';
 import {StarshipCommandHandler} from './write/starship/application/starship.command-handlers';
 import {StarshipEventHandler} from './write/starship/application/starship.event-handlers';
 import {OnlyLogEmailSender} from './write/sharedkernel/infrastructure/only-log-email-sender.adapter';
@@ -24,12 +22,12 @@ import {StarshipId} from './write/starship/domain/starship-id.valueobject';
 import OrdersSoldiersToStarshipTransfer = ArmyCommand.OrderSoldiersToStarshipTransfer;
 import {SoldiersTransferSaga} from './write/soldierstransfer/soldiers-transfer.saga';
 import {ArmyController} from './write/army/presentation/rest/army.controller';
-import {TypeOrmEventStore} from './write/sharedkernel/infrastructure/event-store.typeorm';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import {DomainEventEntity} from './write/sharedkernel/infrastructure/event.typeorm-entity';
 import {Type} from '@nestjs/common/interfaces/type.interface';
 import {DynamicModule} from '@nestjs/common/interfaces/modules/dynamic-module.interface';
 import {ForwardReference} from '@nestjs/common/interfaces/modules/forward-reference.interface';
+import {EventStoreModule} from '../event-store/event-store.module';
 
 const modules: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [CqrsModule];
 if ('typeorm' === process.env.DATABASE_MODE) {
@@ -37,20 +35,12 @@ if ('typeorm' === process.env.DATABASE_MODE) {
 }
 
 @Module({
-    imports: [...modules],
+    imports: [...modules, EventStoreModule],
     controllers: [StarshipsController, FleetStateController, ArmyController],
     providers: [
         {
-            provide: 'TimeProvider',
-            useClass: SystemTimeProvider,
-        },
-        {
             provide: 'StarshipRepository',
             useClass: EventSourcedStarshipRepository,
-        },
-        {
-            provide: 'EventStore',
-            useClass: 'typeorm' === process.env.DATABASE_MODE ? TypeOrmEventStore : InMemoryEventStore,
         },
         {
             provide: 'EmailSender',

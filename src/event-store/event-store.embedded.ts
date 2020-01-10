@@ -1,8 +1,8 @@
 import {EventStore} from './event-store';
-import {TimeProvider} from '../application/time.provider';
+import {TimeProvider} from './time.provider';
 import * as moment from 'moment';
 import {Inject, Injectable} from '@nestjs/common';
-import {StoreDomainEventEntry} from './store-domain-event-entry';
+import {StoreDomainEventEntry} from '../star-wars-event-sourcing/write/sharedkernel/infrastructure/store-domain-event-entry';
 import {EventStreamVersion} from './event-stream-version.valueobject';
 
 @Injectable()
@@ -10,7 +10,7 @@ export class InMemoryEventStore implements EventStore {
 
     private eventStreams: { [key: string]: StoreDomainEventEntry[]; } = {};
 
-    constructor(@Inject('TimeProvider') private readonly timeProvider: TimeProvider) {
+    constructor(@Inject() private readonly timeProvider: TimeProvider) {
     }
 
     store(event: StoreDomainEventEntry, expectedVersion?: EventStreamVersion): Promise<void> {

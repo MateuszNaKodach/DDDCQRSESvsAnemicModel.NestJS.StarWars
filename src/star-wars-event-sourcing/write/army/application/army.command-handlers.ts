@@ -1,6 +1,6 @@
 import {CommandHandler, ICommandHandler} from '@nestjs/cqrs';
 import {Inject} from '@nestjs/common';
-import {TimeProvider} from '../../sharedkernel/application/time.provider';
+import {TimeProvider} from '../../../../event-store/time.provider';
 import {ArmyCommand} from './army.commands';
 import {ArmyRepository} from '../domain/army.repository';
 import {ArmyId} from '../../sharedkernel/domain/army-id.valueobject';
@@ -13,7 +13,7 @@ export namespace ArmyCommandHandler {
 
         constructor(
             @Inject('ArmyRepository') private armyRepository: ArmyRepository,
-            @Inject('TimeProvider') private timeProvider: TimeProvider,
+            @Inject() private timeProvider: TimeProvider,
         ) {
         }
 

@@ -1,18 +1,18 @@
 import {EventStore} from './event-store';
-import {TimeProvider} from '../application/time.provider';
+import {TimeProvider} from './time.provider';
 import * as moment from 'moment';
 import {Inject, Injectable} from '@nestjs/common';
-import {StoreDomainEventEntry} from './store-domain-event-entry';
+import {StoreDomainEventEntry} from '../star-wars-event-sourcing/write/sharedkernel/infrastructure/store-domain-event-entry';
 import {EventStreamVersion} from './event-stream-version.valueobject';
 import {InjectRepository} from '@nestjs/typeorm';
-import {DomainEventEntity} from './event.typeorm-entity';
+import {DomainEventEntity} from '../star-wars-event-sourcing/write/sharedkernel/infrastructure/event.typeorm-entity';
 import {Repository} from 'typeorm';
 
 @Injectable()
 export class TypeOrmEventStore implements EventStore {
 
     constructor(
-        @Inject('TimeProvider') private readonly timeProvider: TimeProvider,
+        @Inject() private readonly timeProvider: TimeProvider,
         @InjectRepository(DomainEventEntity) private readonly typeOrmRepository: Repository<DomainEventEntity>) {
     }
 

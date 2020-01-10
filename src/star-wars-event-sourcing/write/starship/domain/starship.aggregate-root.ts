@@ -2,7 +2,7 @@ import {AggregateRoot} from '@nestjs/cqrs';
 import {StarshipId} from './starship-id.valueobject';
 import {Fraction} from '../../sharedkernel/domain/fraction.enum';
 import {Condition} from './condition.valueobject';
-import {TimeProvider} from '../../sharedkernel/application/time.provider';
+import {TimeProvider} from '../../../../event-store/time.provider';
 import {StarshipDomainEvent} from './starship.domain-events';
 import StarshipSentToBattle = StarshipDomainEvent.StarshipSentToBattle;
 import StarshipAttacked = StarshipDomainEvent.StarshipAttacked;

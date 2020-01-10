@@ -1,5 +1,5 @@
 import {Injectable} from '@nestjs/common';
-import {TimeProvider} from '../application/time.provider';
+import {TimeProvider} from './time.provider';
 import {TestTimeProvider} from './test-time-provider.service';
 
 @Injectable()

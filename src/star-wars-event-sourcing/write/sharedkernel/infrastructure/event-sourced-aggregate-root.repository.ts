@@ -1,10 +1,10 @@
 import {AggregateRoot, EventPublisher} from '@nestjs/cqrs';
-import {EventStore} from './event-store';
+import {EventStore} from '../../../../event-store/event-store';
 import {StarshipRepository} from '../../starship/domain/starship.repository';
 import {StarshipId} from '../../starship/domain/starship-id.valueobject';
 import {Starship} from '../../starship/domain/starship.aggregate-root';
 import {DomainEvent} from '../domain/domain-event';
-import {TimeProvider} from '../application/time.provider';
+import {TimeProvider} from '../../../../event-store/time.provider';
 import {Inject, Injectable} from '@nestjs/common';
 import {StoreDomainEventEntry} from './store-domain-event-entry';
 import {DomainEventId} from '../domain/domain-event-id.valueobject';
