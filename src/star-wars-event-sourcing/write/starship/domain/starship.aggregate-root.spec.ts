@@ -1,6 +1,6 @@
 import {Starship} from './starship.aggregate-root';
 import {TimeProvider} from '../../sharedkernel/application/time.provider';
-import {DateTimeProvider} from '../../sharedkernel/infrastructure/date-time.provider';
+import {SystemTimeProvider} from '../../sharedkernel/infrastructure/system-time-provider.service';
 import {StarshipDomainEvent} from './starship.domain-events';
 import {StarshipId} from './starship-id.valueobject';
 import {Fraction} from '../../sharedkernel/domain/fraction.enum';
@@ -11,7 +11,7 @@ import StarshipSentToBattle = StarshipDomainEvent.StarshipSentToBattle;
 
 describe('Feature: Control starships in the fleet', () => {
 
-    const timeProvider: TimeProvider = new DateTimeProvider();
+    const timeProvider: TimeProvider = new SystemTimeProvider();
 
     describe('Scenario: Send starship with crew to battle', () => {
 

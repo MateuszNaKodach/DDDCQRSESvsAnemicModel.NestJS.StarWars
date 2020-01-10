@@ -3,7 +3,7 @@ import {StarshipsController} from './write/starship/presentation/rest/starships.
 import {CommandBus, CqrsModule} from '@nestjs/cqrs';
 import {EventSourcedStarshipRepository} from './write/starship/infrastructure/event-sourced-starship-repository';
 import {InMemoryEventStore} from './write/sharedkernel/infrastructure/event-store.embedded';
-import {DateTimeProvider} from './write/sharedkernel/infrastructure/date-time.provider';
+import {SystemTimeProvider} from './write/sharedkernel/infrastructure/system-time-provider.service';
 import {StarshipCommandHandler} from './write/starship/application/starship.command-handlers';
 import {StarshipEventHandler} from './write/starship/application/starship.event-handlers';
 import {OnlyLogEmailSender} from './write/sharedkernel/infrastructure/only-log-email-sender.adapter';
@@ -42,7 +42,7 @@ if ('typeorm' === process.env.DATABASE_MODE) {
     providers: [
         {
             provide: 'TimeProvider',
-            useClass: DateTimeProvider,
+            useClass: SystemTimeProvider,
         },
         {
             provide: 'StarshipRepository',
