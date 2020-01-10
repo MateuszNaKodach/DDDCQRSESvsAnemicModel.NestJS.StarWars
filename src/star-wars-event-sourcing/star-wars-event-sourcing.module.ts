@@ -23,7 +23,7 @@ import OrdersSoldiersToStarshipTransfer = ArmyCommand.OrderSoldiersToStarshipTra
 import {SoldiersTransferSaga} from './write/soldierstransfer/soldiers-transfer.saga';
 import {ArmyController} from './write/army/presentation/rest/army.controller';
 import {TypeOrmModule} from '@nestjs/typeorm';
-import {DomainEventEntity} from './write/sharedkernel/infrastructure/event.typeorm-entity';
+import {DomainEventEntity} from '../event-store/event.typeorm-entity';
 import {Type} from '@nestjs/common/interfaces/type.interface';
 import {DynamicModule} from '@nestjs/common/interfaces/modules/dynamic-module.interface';
 import {ForwardReference} from '@nestjs/common/interfaces/modules/forward-reference.interface';

@@ -5,7 +5,7 @@ import {InMemoryEventStore} from './event-store.embedded';
 import {TimeProvider} from './time.provider';
 import {SystemTimeProvider} from './system-time-provider.service';
 import {TypeOrmModule} from '@nestjs/typeorm';
-import {DomainEventEntity} from '../star-wars-event-sourcing/write/sharedkernel/infrastructure/event.typeorm-entity';
+import {DomainEventEntity} from './event.typeorm-entity';
 
 const optionalImports = [];
 if ('typeorm' === process.env.DATABASE_MODE) {

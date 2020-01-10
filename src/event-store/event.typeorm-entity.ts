@@ -2,7 +2,7 @@ import {
     Entity,
     Column, PrimaryColumn, Index,
 } from 'typeorm';
-import {StoreDomainEventEntry} from './store-domain-event-entry';
+import {StoreDomainEventEntry} from '../star-wars-event-sourcing/write/sharedkernel/infrastructure/store-domain-event-entry';
 
 @Entity({name: 'eventsourcing_domain_events', orderBy: {occurredAt: 'ASC'}})
 @Index(['aggregateId', 'order'], {unique: true})
@@ -19,6 +19,7 @@ export class DomainEventEntity implements StoreDomainEventEntry {
     @Column()
     readonly aggregateId: string;
 
+    @Column()
     readonly aggregateType: string;
 
     @Column()

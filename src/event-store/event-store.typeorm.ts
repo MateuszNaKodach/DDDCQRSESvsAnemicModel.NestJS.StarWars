@@ -5,7 +5,7 @@ import {Inject, Injectable} from '@nestjs/common';
 import {StoreDomainEventEntry} from '../star-wars-event-sourcing/write/sharedkernel/infrastructure/store-domain-event-entry';
 import {EventStreamVersion} from './event-stream-version.valueobject';
 import {InjectRepository} from '@nestjs/typeorm';
-import {DomainEventEntity} from '../star-wars-event-sourcing/write/sharedkernel/infrastructure/event.typeorm-entity';
+import {DomainEventEntity} from './event.typeorm-entity';
 import {Repository} from 'typeorm';
 
 @Injectable()
