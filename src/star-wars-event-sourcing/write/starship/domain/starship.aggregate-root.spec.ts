@@ -13,27 +13,50 @@ describe('Feature: Control starships in the fleet', () => {
 
     const timeProvider: TimeProvider = new SystemTimeProvider();
 
-    describe('Scenario: Send starship with crew to battle', () => {
+    describe('Scenario: Send starship to battle', () => {
 
-        const starship = new Starship(timeProvider);
+        let starship: Starship;
         const starshipId = StarshipId.generate();
         const fraction = Fraction.REBELLION;
 
-        describe('Given: Prepared starship with a one crew member', () => {
-            starship.loadFromHistory([
-                StarshipPrepared.newFrom(starshipId, timeProvider.currentDate(), {fraction}),
-                SoldiersAddedToStarshipCrew.newFrom(starshipId, timeProvider.currentDate(), {fraction, soldiers: generateSoldiers(1)}),
-            ]);
+        beforeEach(() => {
+            starship = new Starship(timeProvider);
+        });
+
+        describe('Given: Starship prepared', () => {
+            beforeEach(() => {
+                starship.loadFromHistory([
+                    StarshipPrepared.newFrom(starshipId, timeProvider.currentDate(), {fraction}),
+                ]);
+            });
+
+            describe('And: One soldier added to starship crew', () => {
+
+                beforeEach(() => {
+                    starship.loadFromHistory([
+                        SoldiersAddedToStarshipCrew.newFrom(starshipId, timeProvider.currentDate(), {fraction, soldiers: generateSoldiers(1)}),
+                    ]);
+                });
+
+                describe('When: try to send starship to battle', () => {
+
+                    it('Then: starship should be sent to battle', () => {
+                        starship.sendToBattle();
+                        expect(starship.getUncommittedEvents().map(it => it.constructor)).toContain(
+                            StarshipSentToBattle,
+                        );
+                    });
+                });
+
+            });
 
             describe('When: try to send starship to battle', () => {
-                starship.sendToBattle();
 
-                it('Then: starship should be sent to battle', () => {
-                    expect(starship.getUncommittedEvents().map(it => it.constructor)).toContain(
-                        StarshipSentToBattle,
-                    );
+                it('Then: starship should not be sent to battle', () => {
+                    expect(() => starship.sendToBattle()).toThrow();
                 });
             });
+
         });
 
     });

@@ -14,7 +14,6 @@ import SoldiersAddedToStarshipCrew = StarshipDomainEvent.SoldiersAddedToStarship
 import SoldiersSentBackToArmy = StarshipDomainEvent.SoldiersSentBackToArmy;
 import StarshipPrepared = StarshipDomainEvent.StarshipPrepared;
 
-// TODO: Może żołnierze? I nie można wysłać starship bez żołnierzy?
 export class Starship extends AggregateRoot {
 
     private id: StarshipId;
