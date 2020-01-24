@@ -5,17 +5,18 @@ services:
     image: postgres:12
     container_name: starwars-eventsourcing-nestjs-postgres
     restart: always
-    ports:
-      - "5432:5432"
+    #ports:
+    #  - "5002:5432"
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
       POSTGRES_DB: eventsourcing_star_wars
-    volumes:
-      - ../pgdata:/var/lib/postgresql/data
+    #volumes:
+    # - ../pgdata:/var/lib/postgresql/data #keep data outside container
 
   nestjs-server:
     container_name: starwars-eventsourcing-nestjs-server
+    restart: always
     depends_on:
       - postgres
     ports:
@@ -29,8 +30,13 @@ services:
       DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: postgres
     command: "npm run start:dev:typeorm"
+    volumes:
+    - /app/node_modules
+    - .:/app # reflect changes - only for development
 
   pgadmin:
+    container_name: starwars-eventsourcing-nestjs-pgadmin
+    restart: always
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: "admin@coderscrew.com"

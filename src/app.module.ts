@@ -20,7 +20,6 @@ const typeOrmModule = TypeOrmModule.forRoot({
     database: 'eventsourcing_star_wars',
     entities: [__dirname + '/**/*.typeorm-entity{.ts,.js}'],
     synchronize: true,
-    schema: 'eventsourcing_example',
 });
 
 const modulesToImport: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [
