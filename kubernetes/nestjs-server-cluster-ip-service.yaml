@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nestjs-server-cluster-ip-service
+spec:
+  type: ClusterIP
+  selector:
+    component: nestjs-server
+  ports:
+    - port: 3000
+      targetPort: 3000
