@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: nestjs-server-deployment
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       component: nestjs-server
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: nestjs-server
-          image: zycienakodach/starwars-eventsourcing-nestjs-server
+          image: zycienakodach/starwars-eventsourcing-nestjs
           ports:
             - containerPort: 3000
           env:
