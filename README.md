@@ -1,4 +1,4 @@
-#Event Sourcing: Przeszłość ma znaczenie. 
+# Event Sourcing: Przeszłość ma znaczenie. 
 ## Jak i dlaczego wykorzystać zdarzenia w systemie do utrwalania stanu aplikacji.
 ### Z przykładami w TypeScript i NestJS
 
